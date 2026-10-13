@@ -7,8 +7,8 @@ describe('Senior Firebase Backend Architecture (v10 Modular SDK)', () => {
   const firebaseJsPath = path.resolve('c:/Users/user/Desktop/web app1/web app/js/firebase.js');
   const fileContent = fs.readFileSync(firebaseJsPath, 'utf8');
 
-  test('1. Configurable firebaseConfig object with project ID piovde-tax', () => {
-    assert.ok(fileContent.includes("projectId:         (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.projectId) || \"piovde-tax\""), 'Must define configurable projectId piovde-tax');
+  test('1. Configurable firebaseConfig object with project ID uk-client-d90d5', () => {
+    assert.ok(fileContent.includes("projectId:         (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.projectId) || \"uk-client-d90d5\""), 'Must define configurable projectId uk-client-d90d5');
     assert.ok(fileContent.includes('export const firebaseConfig'), 'Must export firebaseConfig');
   });
 

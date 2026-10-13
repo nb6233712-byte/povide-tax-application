@@ -1,7 +1,7 @@
 // scripts/sync-backend-firebase.mjs
-// Synchronizes canonical practice engagements, signatures, and client profiles to Cloud Firestore (piovde-tax)
+// Synchronizes canonical practice engagements, signatures, and client profiles to Cloud Firestore (uk-client-d90d5)
 
-const PROJECT_ID = 'piovde-tax';
+const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'uk-client-d90d5';
 const BASE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
 function toFirestoreFields(obj) {
@@ -41,9 +41,14 @@ function toFirestoreFields(obj) {
 async function writeDoc(collection, docId, data) {
   const url = `${BASE_URL}/${collection}/${encodeURIComponent(docId)}`;
   const body = JSON.stringify({ fields: toFirestoreFields(data) });
+  const headers = { 'Content-Type': 'application/json' };
+  const token = process.env.FIREBASE_ID_TOKEN || process.env.FIREBASE_AUTH_TOKEN;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   const res = await fetch(url, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body
   });
   if (!res.ok) {

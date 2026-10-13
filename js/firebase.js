@@ -51,12 +51,12 @@ import * as FormspreeModule from "./formspree.js";
 
 export { ref, uploadBytesResumable, uploadBytes, getDownloadURL, updateDoc, serverTimestamp };
 
-// ── Configuration (Project ID: piovde-tax) ──────────────────
+// ── Configuration (Project ID: uk-client-d90d5) ──────────────────
 export const firebaseConfig = {
   apiKey:            (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.apiKey) || "AIzaSyCK3YCRroQ2rHgdVx4lqH4z10Ie13biN8w",
-  authDomain:        (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.authDomain) || "piovde-tax.firebaseapp.com",
-  projectId:         (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.projectId) || "piovde-tax",
-  storageBucket:     (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.storageBucket) || "piovde-tax.firebasestorage.app",
+  authDomain:        (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.authDomain) || "uk-client-d90d5.firebaseapp.com",
+  projectId:         (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.projectId) || "uk-client-d90d5",
+  storageBucket:     (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.storageBucket) || "uk-client-d90d5.firebasestorage.app",
   messagingSenderId: (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.messagingSenderId) || "760928476966",
   appId:             (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.appId) || "1:760928476966:web:6659b9ee8395e529a56be7",
   measurementId:     (typeof window !== 'undefined' && window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.measurementId) || "G-B0RMTC8VBX"
@@ -449,7 +449,15 @@ if (typeof window !== 'undefined' && firebaseConfig.measurementId) {
   window.gtag('js', new Date());
   window.gtag('config', firebaseConfig.measurementId, { send_page_view: false });
 
-  if (window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
+  const isLocalEnv = Boolean(
+    window.location &&
+    window.location.hostname &&
+    (window.location.hostname === 'localhost' ||
+     window.location.hostname === '127.0.0.1' ||
+     window.location.hostname.endsWith('.local'))
+  );
+
+  if (!isLocalEnv && window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
     if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
       const gaScript = document.createElement('script');
       gaScript.async = true;
