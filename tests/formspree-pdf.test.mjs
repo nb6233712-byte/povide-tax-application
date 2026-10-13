@@ -1,15 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { FORMSPREE_ENDPOINT, submitPdfToFormspree } from '../js/formspree.js';
+import {
+  DEFAULT_FORMINIT_KEY,
+  FORMINIT_ENDPOINT,
+  FORMSPREE_ENDPOINT,
+  DEFAULT_FORMSPREE_KEY,
+  getForminitEndpoint,
+  getFormspreeEndpoint,
+  setForminitApiKey,
+  setFormspreeApiKey,
+  submitPdfToForminit,
+  submitPdfToFormspree,
+  resolveClientEmail,
+  resolveClientName
+} from '../js/formspree.js';
 
-test('Formspree PDF Transmission Service', async (t) => {
-  await t.test('1. Endpoint Configuration', () => {
-    assert.equal(FORMSPREE_ENDPOINT, 'https://formspree.io/f/xppqrdlv');
+test('Forminit PDF Transmission Service', async (t) => {
+  await t.test('1. Endpoint Configuration: Defaults to Forminit rv02anqc45x', () => {
+    assert.equal(FORMINIT_ENDPOINT, 'https://forminit.com/f/rv02anqc45x');
+    assert.equal(DEFAULT_FORMINIT_KEY, 'rv02anqc45x');
+    assert.equal(FORMSPREE_ENDPOINT, 'https://forminit.com/f/rv02anqc45x');
+    assert.equal(DEFAULT_FORMSPREE_KEY, 'rv02anqc45x');
   });
 
   await t.test('2. File Validation: Requires a PDF file', async () => {
     await assert.rejects(
-      async () => submitPdfToFormspree(null),
+      async () => submitPdfToForminit(null),
       /Please select a PDF document/
     );
 
@@ -19,7 +35,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       size: 1024
     };
     await assert.rejects(
-      async () => submitPdfToFormspree(nonPdf),
+      async () => submitPdfToForminit(nonPdf),
       /Invalid file format.*PDF/
     );
   });
@@ -31,12 +47,12 @@ test('Formspree PDF Transmission Service', async (t) => {
       size: 11 * 1024 * 1024 // 11MB
     };
     await assert.rejects(
-      async () => submitPdfToFormspree(hugePdf),
+      async () => submitPdfToForminit(hugePdf),
       /exceeds the 10 MB limit/
     );
   });
 
-  await t.test('4. Successful AJAX submission dispatches FormData and parses response', async () => {
+  await t.test('4. Successful AJAX submission dispatches FormData to Forminit and parses response', async () => {
     const originalFetch = globalThis.fetch;
     let interceptedUrl = null;
     let interceptedOptions = null;
@@ -46,7 +62,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       interceptedOptions = options;
       return {
         ok: true,
-        json: async () => ({ ok: true, next: 'https://formspree.io/thanks' })
+        json: async () => ({ ok: true, status: 'success' })
       };
     };
 
@@ -54,7 +70,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       const mockBlob = new Blob(['%PDF-1.4 dummy pdf content'], { type: 'application/pdf' });
       mockBlob.name = 'Form_1040_2026.pdf';
 
-      const result = await submitPdfToFormspree(mockBlob, {
+      const result = await submitPdfToForminit(mockBlob, {
         name: 'Denise Vance',
         email: 'denise@pivot-aide.tax',
         taxYear: '2026',
@@ -62,18 +78,20 @@ test('Formspree PDF Transmission Service', async (t) => {
       });
 
       assert.equal(result.success, true);
-      assert.equal(interceptedUrl, 'https://formspree.io/f/xppqrdlv');
+      assert.equal(interceptedUrl, 'https://forminit.com/f/rv02anqc45x');
       assert.equal(interceptedOptions.method, 'POST');
       assert.equal(interceptedOptions.headers['Accept'], 'application/json');
       // Verify Content-Type is NOT manually set so browser boundary works
       assert.equal(interceptedOptions.headers['Content-Type'], undefined);
       assert.ok(interceptedOptions.body instanceof FormData);
+      assert.equal(interceptedOptions.body.get('email'), 'denise@pivot-aide.tax');
+      assert.equal(interceptedOptions.body.get('_replyto'), 'denise@pivot-aide.tax');
     } finally {
       globalThis.fetch = originalFetch;
     }
   });
 
-  await t.test('5. Error Handling: Formspree error responses', async () => {
+  await t.test('5. Error Handling: Forminit error responses', async () => {
     const originalFetch = globalThis.fetch;
 
     globalThis.fetch = async () => ({
@@ -87,7 +105,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       const mockBlob = new Blob(['%PDF-1.4 dummy'], { type: 'application/pdf' });
       mockBlob.name = 'Form_W2.pdf';
 
-      const result = await submitPdfToFormspree(mockBlob);
+      const result = await submitPdfToForminit(mockBlob);
       assert.equal(result.success, false);
       assert.match(result.message, /File could not be processed/);
     } finally {
@@ -95,34 +113,30 @@ test('Formspree PDF Transmission Service', async (t) => {
     }
   });
 
-  await t.test('6. Configurable Formsphere API Key & Endpoint Resolution', async () => {
-    const { getFormspreeEndpoint, setFormspreeApiKey, DEFAULT_FORMSPREE_KEY } = await import('../js/formspree.js');
-
+  await t.test('6. Configurable Forminit API Key & Endpoint Resolution', async () => {
     // Default endpoint
-    assert.equal(getFormspreeEndpoint(), 'https://formspree.io/f/xppqrdlv');
-    assert.equal(DEFAULT_FORMSPREE_KEY, 'xppqrdlv');
+    assert.equal(getForminitEndpoint(), 'https://forminit.com/f/rv02anqc45x');
+    assert.equal(getFormspreeEndpoint(), 'https://forminit.com/f/rv02anqc45x');
 
     // Clean key string
-    assert.equal(getFormspreeEndpoint('mzzk_custom_key'), 'https://formspree.io/f/mzzk_custom_key');
+    assert.equal(getForminitEndpoint('custom_key_abc'), 'https://forminit.com/f/custom_key_abc');
 
     // Form ID with leading /f/
-    assert.equal(getFormspreeEndpoint('/f/custom_key_99'), 'https://formspree.io/f/custom_key_99');
+    assert.equal(getForminitEndpoint('/f/rv02anqc45x'), 'https://forminit.com/f/rv02anqc45x');
 
     // Full URL passthrough
-    assert.equal(getFormspreeEndpoint('https://formspree.io/f/target123'), 'https://formspree.io/f/target123');
+    assert.equal(getForminitEndpoint('https://forminit.com/f/rv02anqc45x'), 'https://forminit.com/f/rv02anqc45x');
 
     // Global setter function
-    const resolved = setFormspreeApiKey('formsphere_key_live');
-    assert.equal(resolved, 'https://formspree.io/f/formsphere_key_live');
-    assert.equal(getFormspreeEndpoint(), 'https://formspree.io/f/formsphere_key_live');
+    const resolved = setForminitApiKey('forminit_live_key');
+    assert.equal(resolved, 'https://forminit.com/f/forminit_live_key');
+    assert.equal(getForminitEndpoint(), 'https://forminit.com/f/forminit_live_key');
 
     // Reset back to default
-    setFormspreeApiKey('xppqrdlv');
+    setForminitApiKey('rv02anqc45x');
   });
 
   await t.test('7. Client-Side Email Resolution & _replyto Binding', async () => {
-    const { resolveClientEmail, resolveClientName } = await import('../js/formspree.js');
-
     // Explicit email override
     assert.equal(resolveClientEmail('taxpayer.client@example.org'), 'taxpayer.client@example.org');
 
@@ -140,7 +154,7 @@ test('Formspree PDF Transmission Service', async (t) => {
     }
   });
 
-  await t.test('8. Transmits client email and custom Formsphere API key with attached PDF', async () => {
+  await t.test('8. Transmits client email and Forminit endpoint with attached PDF', async () => {
     const originalFetch = globalThis.fetch;
     let postedEndpoint = null;
     let postedFormData = null;
@@ -150,7 +164,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       postedFormData = options.body;
       return {
         ok: true,
-        json: async () => ({ ok: true, submissionId: 'sub_9981' })
+        json: async () => ({ ok: true, submissionId: 'sub_init_771' })
       };
     };
 
@@ -158,8 +172,8 @@ test('Formspree PDF Transmission Service', async (t) => {
       const mockBlob = new Blob(['%PDF-1.4 1040 test content'], { type: 'application/pdf' });
       mockBlob.name = 'Form_1040_Whitfield.pdf';
 
-      const result = await submitPdfToFormspree(mockBlob, {
-        apiKey: 'custom_formsphere_key_4417',
+      const result = await submitPdfToForminit(mockBlob, {
+        apiKey: 'https://forminit.com/f/rv02anqc45x',
         clientEmail: 'm.whitfield@example.com',
         clientName: 'Michael Whitfield',
         taxYear: 2026,
@@ -168,7 +182,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       });
 
       assert.equal(result.success, true);
-      assert.equal(postedEndpoint, 'https://formspree.io/f/custom_formsphere_key_4417');
+      assert.equal(postedEndpoint, 'https://forminit.com/f/rv02anqc45x');
       assert.equal(postedFormData.get('email'), 'm.whitfield@example.com');
       assert.equal(postedFormData.get('_replyto'), 'm.whitfield@example.com');
       assert.equal(postedFormData.get('name'), 'Michael Whitfield');
@@ -176,6 +190,7 @@ test('Formspree PDF Transmission Service', async (t) => {
       assert.equal(postedFormData.get('category'), 'Form 1040 Schedule C');
       assert.equal(postedFormData.get('requestId'), 'req_1040_2026');
       assert.ok(postedFormData.get('attachment') !== null);
+      assert.ok(postedFormData.get('file') !== null);
     } finally {
       globalThis.fetch = originalFetch;
     }

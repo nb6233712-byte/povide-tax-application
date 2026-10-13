@@ -580,7 +580,8 @@
             clientName: (currentUser && currentUser.displayName) || 'Michael Whitfield',
             requestId: requestId,
             detectedType: val.detectedType,
-            formsphereApiKey: (typeof window !== 'undefined' ? (window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY) : undefined),
+            forminitApiKey: (typeof window !== 'undefined' ? (window.FORMINIT_API_KEY || window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY) : undefined),
+            formsphereApiKey: (typeof window !== 'undefined' ? (window.FORMINIT_API_KEY || window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY) : undefined),
             onProgress: function (pct) {
               self.updateProgress(pct);
               self.updateCardProgress(requestId, pct);

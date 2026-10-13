@@ -1,48 +1,57 @@
 /**
  * ============================================================================
- * The File Room · Formspree PDF Transmission Service
- * Endpoint: https://formspree.io/f/xppqrdlv
+ * The File Room · Forminit PDF Transmission Service
+ * Endpoint: https://forminit.com/f/rv02anqc45x
  *
  * Uses Vanilla JS (Ajax / Fetch) with FormData to transmit tax PDFs,
- * metadata, and messages to Formspree without full-page reloads.
+ * metadata, and messages to Forminit without full-page reloads.
+ * Full backward-compatibility provided for Formspree / Formsphere references.
  * ============================================================================
  */
 
-export const DEFAULT_FORMSPREE_KEY = 'xppqrdlv';
-export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/' + DEFAULT_FORMSPREE_KEY;
+export const DEFAULT_FORMINIT_KEY = 'rv02anqc45x';
+export const FORMINIT_ENDPOINT = 'https://forminit.com/f/' + DEFAULT_FORMINIT_KEY;
+
+// Backward-compatible aliases
+export const DEFAULT_FORMSPREE_KEY = DEFAULT_FORMINIT_KEY;
+export const FORMSPREE_ENDPOINT = FORMINIT_ENDPOINT;
 
 let _activeApiKey = null;
 
 /**
- * Returns the effective Formspree / Formsphere endpoint URL.
+ * Returns the effective Forminit (or Formsphere/Formspree) endpoint URL.
  * Supports:
- * - Direct custom key or form ID (e.g. 'xppqrdlv' or 'mzzk1234')
- * - Full Formspree URL (e.g. 'https://formspree.io/f/xppqrdlv')
- * - Global window/globalThis.FORMSPHERE_API_KEY, FORMSPREE_API_KEY, or FORMSPREE_ENDPOINT
- * - localStorage 'formsphere_api_key' or 'formspree_api_key'
- * - Fallback to default active FORMSPREE_ENDPOINT
+ * - Direct custom key or form ID (e.g. 'rv02anqc45x' or 'xppqrdlv')
+ * - Full URL (e.g. 'https://forminit.com/f/rv02anqc45x' or 'https://formspree.io/f/...')
+ * - Global window/globalThis.FORMINIT_API_KEY, FORMSPHERE_API_KEY, FORMSPREE_API_KEY
+ * - localStorage 'forminit_api_key', 'formsphere_api_key', or 'formspree_api_key'
+ * - Fallback to default active FORMINIT_ENDPOINT
  *
  * @param {string} [customKeyOrUrl]
  * @returns {string}
  */
-export function getFormspreeEndpoint(customKeyOrUrl) {
+export function getForminitEndpoint(customKeyOrUrl) {
   let raw = customKeyOrUrl || _activeApiKey;
   const env = typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null);
 
   if (!raw && env) {
-    raw = env.FORMSPHERE_API_KEY ||
+    raw = env.FORMINIT_API_KEY ||
+          env.FORMINIT_ENDPOINT ||
+          env.FORMSPHERE_API_KEY ||
           env.FORMSPREE_API_KEY ||
           env.FORMSPREE_ENDPOINT;
   }
   if (!raw && env && env.localStorage) {
     try {
-      raw = env.localStorage.getItem('formsphere_api_key') ||
+      raw = env.localStorage.getItem('forminit_api_key') ||
+            env.localStorage.getItem('forminit_endpoint') ||
+            env.localStorage.getItem('formsphere_api_key') ||
             env.localStorage.getItem('formspree_api_key') ||
             env.localStorage.getItem('formspree_endpoint');
     } catch (_) {}
   }
   if (!raw) {
-    return FORMSPREE_ENDPOINT;
+    return FORMINIT_ENDPOINT;
   }
 
   const str = String(raw).trim();
@@ -50,30 +59,39 @@ export function getFormspreeEndpoint(customKeyOrUrl) {
     return str;
   }
   const cleanKey = str.replace(/^\/?f\//i, '').replace(/^\/+/, '').trim();
-  return `https://formspree.io/f/${cleanKey}`;
+  // Check if legacy Formspree key pattern or Forminit pattern: default to forminit.com
+  return `https://forminit.com/f/${cleanKey}`;
 }
 
+export const getFormspreeEndpoint = getForminitEndpoint;
+export const getFormsphereEndpoint = getForminitEndpoint;
+
 /**
- * Configures the Formsphere / Formspree API key globally and in localStorage.
+ * Configures the Forminit / Formsphere / Formspree API key globally and in localStorage.
  *
- * @param {string} key - Formspree Form ID or API Key (e.g., 'xppqrdlv')
+ * @param {string} key - Forminit Form ID or API Key (e.g., 'rv02anqc45x')
  * @returns {string} The fully qualified endpoint URL
  */
-export function setFormspreeApiKey(key) {
+export function setForminitApiKey(key) {
   _activeApiKey = key;
   const env = typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null);
   if (env) {
+    env.FORMINIT_API_KEY = key;
     env.FORMSPHERE_API_KEY = key;
     env.FORMSPREE_API_KEY = key;
     if (env.localStorage) {
       try {
+        env.localStorage.setItem('forminit_api_key', key);
         env.localStorage.setItem('formsphere_api_key', key);
         env.localStorage.setItem('formspree_api_key', key);
       } catch (_) {}
     }
   }
-  return getFormspreeEndpoint(key);
+  return getForminitEndpoint(key);
 }
+
+export const setFormspreeApiKey = setForminitApiKey;
+export const setFormsphereApiKey = setForminitApiKey;
 
 /**
  * Automatically retrieves the authenticated client's email address from the client side.
@@ -155,14 +173,14 @@ export function resolveClientName(explicitName) {
 }
 
 /**
- * Validates and submits a PDF document with metadata directly to Formspree via AJAX.
+ * Validates and submits a PDF document with metadata directly to Forminit via AJAX.
  * Automatically bundles the client's email address from the client side.
  *
  * @param {File|Blob|Object} pdfFile - The authentic PDF File object from an <input type="file"> or DragEvent
  * @param {Object} metadata - Context details (name, email, taxYear, message, apiKey, etc.)
  * @returns {Promise<{success: boolean, message?: string, endpoint?: string, email?: string, errors?: Array}>}
  */
-export async function submitPdfToFormspree(pdfFile, metadata = {}) {
+export async function submitPdfToForminit(pdfFile, metadata = {}) {
   // 1. Client-Side Validation for PDFs
   if (!pdfFile) {
     throw new Error('Please select a PDF document to upload.');
@@ -171,7 +189,7 @@ export async function submitPdfToFormspree(pdfFile, metadata = {}) {
   const fileName = pdfFile.name || 'document.pdf';
   const isPdf = pdfFile.type === 'application/pdf' || fileName.toLowerCase().endsWith('.pdf');
   if (!isPdf) {
-    throw new Error('Invalid file format. Formspree intake requires an authentic PDF document (.pdf).');
+    throw new Error('Invalid file format. Forminit intake requires an authentic PDF document (.pdf).');
   }
 
   // 10MB standard safe threshold for email delivery
@@ -181,8 +199,8 @@ export async function submitPdfToFormspree(pdfFile, metadata = {}) {
     throw new Error(`PDF file size (${sizeMb} MB) exceeds the 10 MB limit for email delivery.`);
   }
 
-  // Resolve target Formspree endpoint (supports custom API keys / Formsphere keys)
-  const targetEndpoint = getFormspreeEndpoint(metadata.apiKey || metadata.formsphereApiKey || metadata.endpoint);
+  // Resolve target Forminit endpoint (supports custom API keys / Formsphere / Formspree keys)
+  const targetEndpoint = getForminitEndpoint(metadata.apiKey || metadata.forminitApiKey || metadata.formsphereApiKey || metadata.endpoint);
 
   // Resolve client email and name from client side
   const clientEmail = resolveClientEmail(metadata.email || metadata.clientEmail);
@@ -206,17 +224,20 @@ export async function submitPdfToFormspree(pdfFile, metadata = {}) {
   }
   formData.append('uploadedAt', metadata.uploadedAt || new Date().toISOString());
 
-  // Special Formspree routing & notification helpers
+  // Special Forminit routing & notification helpers
   formData.append('_subject', `[The File Room] New Tax PDF: ${fileName} (${clientName} · ${clientEmail})`);
 
-  // File attachment (Note: In HTML / FormData, the file key is sent as binary)
+  // File attachment (append as both 'attachment' and 'file' for maximum compatibility)
   if (typeof Blob !== 'undefined' && pdfFile instanceof Blob) {
     formData.append('attachment', pdfFile, fileName);
+    formData.append('file', pdfFile, fileName);
   } else if (typeof Blob !== 'undefined' && typeof pdfFile === 'object') {
     const fallbackBlob = new Blob([pdfFile.content || '%PDF-1.4 tax document content'], { type: 'application/pdf' });
     formData.append('attachment', fallbackBlob, fileName);
+    formData.append('file', fallbackBlob, fileName);
   } else {
     formData.append('attachment', pdfFile, fileName);
+    formData.append('file', pdfFile, fileName);
   }
 
   // 3. Dispatch via AJAX Fetch
@@ -234,7 +255,8 @@ export async function submitPdfToFormspree(pdfFile, metadata = {}) {
   if (!response.ok) {
     const errorMsg = (data.errors && data.errors.map(e => e.message).join(', ')) ||
                      data.error ||
-                     'Formspree submission failed. Please check form settings and file size.';
+                     data.message ||
+                     'Forminit submission failed. Please check form settings and file size.';
     return {
       success: false,
       message: errorMsg,
@@ -246,20 +268,22 @@ export async function submitPdfToFormspree(pdfFile, metadata = {}) {
 
   return {
     success: true,
-    message: 'PDF transmitted successfully to Formspree!',
+    message: 'PDF transmitted successfully to Forminit!',
     endpoint: targetEndpoint,
     email: clientEmail,
     response: data
   };
 }
 
+export const submitPdfToFormspree = submitPdfToForminit;
+
 /**
- * Auto-wires an existing HTML form element to submit PDFs to Formspree via AJAX.
+ * Auto-wires an existing HTML form element to submit PDFs to Forminit via AJAX.
  *
  * @param {string|HTMLFormElement} formSelector - CSS selector or form DOM element
  * @param {Object} options - Callbacks: onStart, onSuccess, onError
  */
-export function initFormspreePdfForm(formSelector, options = {}) {
+export function initForminitPdfForm(formSelector, options = {}) {
   const form = typeof formSelector === 'string' ? document.querySelector(formSelector) : formSelector;
   if (!form) return;
 
@@ -284,11 +308,11 @@ export function initFormspreePdfForm(formSelector, options = {}) {
     }
 
     try {
-      const result = await submitPdfToFormspree(file, {
+      const result = await submitPdfToForminit(file, {
         email: emailInput ? emailInput.value : undefined,
         name: nameInput ? nameInput.value : undefined,
         message: msgInput ? msgInput.value : undefined,
-        apiKey: options.apiKey || options.formsphereApiKey
+        apiKey: options.apiKey || options.forminitApiKey || options.formsphereApiKey
       });
 
       if (result.success) {
@@ -322,19 +346,32 @@ export function initFormspreePdfForm(formSelector, options = {}) {
   });
 }
 
+export const initFormspreePdfForm = initForminitPdfForm;
+
 // Global exposure for non-module scripts & browser window
 if (typeof window !== 'undefined') {
-  window.FormspreePdfService = {
-    endpoint: FORMSPREE_ENDPOINT,
-    defaultKey: DEFAULT_FORMSPREE_KEY,
-    getEndpoint: getFormspreeEndpoint,
-    setApiKey: setFormspreeApiKey,
+  const serviceObj = {
+    endpoint: FORMINIT_ENDPOINT,
+    defaultKey: DEFAULT_FORMINIT_KEY,
+    getEndpoint: getForminitEndpoint,
+    setApiKey: setForminitApiKey,
     resolveClientEmail,
     resolveClientName,
-    submitPdfToFormspree,
-    initFormspreePdfForm
+    submitPdfToForminit,
+    submitPdfToFormspree: submitPdfToForminit,
+    initForminitPdfForm,
+    initFormspreePdfForm: initForminitPdfForm
   };
-  window.setFormsphereApiKey = setFormspreeApiKey;
-  window.setFormspreeApiKey = setFormspreeApiKey;
-  window.getFormsphereEndpoint = getFormspreeEndpoint;
+
+  window.ForminitPdfService = serviceObj;
+  window.FormspreePdfService = serviceObj;
+  window.setForminitApiKey = setForminitApiKey;
+  window.setFormsphereApiKey = setForminitApiKey;
+  window.setFormspreeApiKey = setForminitApiKey;
+  window.getForminitEndpoint = getForminitEndpoint;
+  window.getFormsphereEndpoint = getForminitEndpoint;
+  window.submitPdfToForminit = submitPdfToForminit;
+  window.submitPdfToFormspree = submitPdfToForminit;
+  window.FORMINIT_ENDPOINT = FORMINIT_ENDPOINT;
+  window.FORMINIT_API_KEY = DEFAULT_FORMINIT_KEY;
 }

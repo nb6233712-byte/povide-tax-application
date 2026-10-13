@@ -3270,16 +3270,18 @@ export const FirebaseBridge = {
     const clientEmail = options.clientEmail ||
       options.email ||
       this.currentUser?.email ||
+      (typeof window !== 'undefined' && window.ForminitPdfService && typeof window.ForminitPdfService.resolveClientEmail === 'function' ? window.ForminitPdfService.resolveClientEmail() : null) ||
       (typeof window !== 'undefined' && window.FormspreePdfService && typeof window.FormspreePdfService.resolveClientEmail === 'function' ? window.FormspreePdfService.resolveClientEmail() : null) ||
       'm.whitfield@example.com';
 
     const clientName = options.clientName ||
       options.name ||
       this.currentUser?.displayName ||
+      (typeof window !== 'undefined' && window.ForminitPdfService && typeof window.ForminitPdfService.resolveClientName === 'function' ? window.ForminitPdfService.resolveClientName() : null) ||
       (typeof window !== 'undefined' && window.FormspreePdfService && typeof window.FormspreePdfService.resolveClientName === 'function' ? window.FormspreePdfService.resolveClientName() : null) ||
       'Michael Whitfield';
 
-    // Route PDF attachments through Formspree intake with client email & API key
+    // Route PDF attachments through Forminit intake with client email & API key
     const isPdf = Boolean(
       (file.type && file.type.toLowerCase() === 'application/pdf') ||
       (sanitizedName.toLowerCase().endsWith('.pdf'))
@@ -3297,21 +3299,25 @@ export const FirebaseBridge = {
         requestId: options.requestId || '',
         clientId: uid,
         message: options.message || `Uploaded tax document: ${file.name || sanitizedName} to secure vault`,
-        apiKey: options.formsphereApiKey || options.formspreeApiKey || options.apiKey ||
-                (typeof window !== 'undefined' ? (window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY) : undefined)
+        apiKey: options.forminitApiKey || options.formsphereApiKey || options.formspreeApiKey || options.apiKey ||
+                (typeof window !== 'undefined' ? (window.FORMINIT_API_KEY || window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY) : undefined)
       };
 
       formspreePromise = (async () => {
         try {
-          if (typeof FormspreeModule !== 'undefined' && typeof FormspreeModule.submitPdfToFormspree === 'function') {
+          if (typeof FormspreeModule !== 'undefined' && typeof FormspreeModule.submitPdfToForminit === 'function') {
+            return await FormspreeModule.submitPdfToForminit(file, formspreeMeta);
+          } else if (typeof FormspreeModule !== 'undefined' && typeof FormspreeModule.submitPdfToFormspree === 'function') {
             return await FormspreeModule.submitPdfToFormspree(file, formspreeMeta);
+          } else if (typeof window !== 'undefined' && window.ForminitPdfService && typeof window.ForminitPdfService.submitPdfToForminit === 'function') {
+            return await window.ForminitPdfService.submitPdfToForminit(file, formspreeMeta);
           } else if (typeof window !== 'undefined' && window.FormspreePdfService && typeof window.FormspreePdfService.submitPdfToFormspree === 'function') {
             return await window.FormspreePdfService.submitPdfToFormspree(file, formspreeMeta);
           } else if (typeof fetch === 'function') {
             const rawKey = formspreeMeta.apiKey ||
-              (typeof window !== 'undefined' && (window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY)) ||
-              'xppqrdlv';
-            const endpoint = String(rawKey).startsWith('http') ? rawKey : `https://formspree.io/f/${String(rawKey).replace(/^\/?f\//i, '')}`;
+              (typeof window !== 'undefined' && (window.FORMINIT_API_KEY || window.FORMSPHERE_API_KEY || window.FORMSPREE_API_KEY)) ||
+              'rv02anqc45x';
+            const endpoint = String(rawKey).startsWith('http') ? rawKey : `https://forminit.com/f/${String(rawKey).replace(/^\/?f\//i, '')}`;
             const fd = new FormData();
             fd.append('email', clientEmail);
             fd.append('_replyto', clientEmail);
@@ -3321,10 +3327,14 @@ export const FirebaseBridge = {
             fd.append('message', formspreeMeta.message);
             if (typeof Blob !== 'undefined' && file instanceof Blob) {
               fd.append('attachment', file, file.name || sanitizedName);
+              fd.append('file', file, file.name || sanitizedName);
             } else if (typeof Blob !== 'undefined') {
-              fd.append('attachment', new Blob([file.content || '%PDF-1.4 simulated pdf'], { type: 'application/pdf' }), file.name || sanitizedName);
+              const b = new Blob([file.content || '%PDF-1.4 simulated pdf'], { type: 'application/pdf' });
+              fd.append('attachment', b, file.name || sanitizedName);
+              fd.append('file', b, file.name || sanitizedName);
             } else {
               fd.append('attachment', file, file.name || sanitizedName);
+              fd.append('file', file, file.name || sanitizedName);
             }
             const res = await fetch(endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
             const data = await res.json().catch(() => ({}));
@@ -3332,7 +3342,7 @@ export const FirebaseBridge = {
           }
           return { success: false, reason: 'fetch-not-available' };
         } catch (fErr) {
-          console.warn('Formspree dispatch notice:', fErr?.message || fErr);
+          console.warn('Forminit dispatch notice:', fErr?.message || fErr);
           return { success: false, error: fErr?.message || String(fErr), email: clientEmail };
         }
       })();
@@ -5271,14 +5281,17 @@ FirebaseBridge.setDoc = setDoc;
 FirebaseBridge.getDoc = getDoc;
 FirebaseBridge.getDocs = getDocs;
 FirebaseBridge.serverTimestamp = serverTimestamp;
-FirebaseBridge.submitPdfToFormspree = (typeof FormspreeModule !== 'undefined' && FormspreeModule.submitPdfToFormspree) ||
-  ((typeof window !== 'undefined' && window.FormspreePdfService) ? window.FormspreePdfService.submitPdfToFormspree : null);
-FirebaseBridge.getFormsphereEndpoint = (typeof FormspreeModule !== 'undefined' && FormspreeModule.getFormspreeEndpoint) ||
-  ((typeof window !== 'undefined' && window.FormspreePdfService) ? window.FormspreePdfService.getEndpoint : null);
-FirebaseBridge.setFormsphereApiKey = (typeof FormspreeModule !== 'undefined' && FormspreeModule.setFormspreeApiKey) ||
-  ((typeof window !== 'undefined' && window.FormspreePdfService) ? window.FormspreePdfService.setApiKey : null);
+FirebaseBridge.submitPdfToForminit = (typeof FormspreeModule !== 'undefined' && (FormspreeModule.submitPdfToForminit || FormspreeModule.submitPdfToFormspree)) ||
+  ((typeof window !== 'undefined' && (window.ForminitPdfService || window.FormspreePdfService)) ? (window.ForminitPdfService?.submitPdfToForminit || window.FormspreePdfService?.submitPdfToFormspree) : null);
+FirebaseBridge.submitPdfToFormspree = FirebaseBridge.submitPdfToForminit;
+FirebaseBridge.getForminitEndpoint = (typeof FormspreeModule !== 'undefined' && (FormspreeModule.getForminitEndpoint || FormspreeModule.getFormspreeEndpoint)) ||
+  ((typeof window !== 'undefined' && (window.ForminitPdfService || window.FormspreePdfService)) ? (window.ForminitPdfService?.getEndpoint || window.FormspreePdfService?.getEndpoint) : null);
+FirebaseBridge.getFormsphereEndpoint = FirebaseBridge.getForminitEndpoint;
+FirebaseBridge.setForminitApiKey = (typeof FormspreeModule !== 'undefined' && (FormspreeModule.setForminitApiKey || FormspreeModule.setFormspreeApiKey)) ||
+  ((typeof window !== 'undefined' && (window.ForminitPdfService || window.FormspreePdfService)) ? (window.ForminitPdfService?.setApiKey || window.FormspreePdfService?.setApiKey) : null);
+FirebaseBridge.setFormsphereApiKey = FirebaseBridge.setForminitApiKey;
 FirebaseBridge.resolveClientEmail = (typeof FormspreeModule !== 'undefined' && FormspreeModule.resolveClientEmail) ||
-  ((typeof window !== 'undefined' && window.FormspreePdfService) ? window.FormspreePdfService.resolveClientEmail : null);
+  ((typeof window !== 'undefined' && (window.ForminitPdfService || window.FormspreePdfService)) ? (window.ForminitPdfService?.resolveClientEmail || window.FormspreePdfService?.resolveClientEmail) : null);
 
 // ── Global Exposure (for vanilla JS in app.js) ─────────────
 window.FirebaseBridge = FirebaseBridge;
@@ -5305,9 +5318,12 @@ window.uploadBytesResumable = uploadBytesResumable;
 window.getDownloadURL = getDownloadURL;
 window.updateDoc = updateDoc;
 window.serverTimestamp = serverTimestamp;
+window.submitPdfToForminit = FirebaseBridge.submitPdfToForminit;
 window.submitPdfToFormspree = FirebaseBridge.submitPdfToFormspree;
+window.getForminitEndpoint = FirebaseBridge.getForminitEndpoint;
 window.getFormsphereEndpoint = FirebaseBridge.getFormsphereEndpoint;
-window.setFormsphereApiKey = FirebaseBridge.setFormsphereApiKey;
+window.setForminitApiKey = FirebaseBridge.setForminitApiKey;
+window.setFormsphereApiKey = FirebaseBridge.setForminitApiKey;
 
 window.dispatchEvent(new CustomEvent('firebase-ready', { detail: FirebaseBridge }));
 window.dispatchEvent(new CustomEvent('firebase-bridge-ready', { detail: FirebaseBridge }));
