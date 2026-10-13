@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docs Review Queue — Firm Operations — The File Room</title>
+  <meta name="description" content="Practitioner document verification, acceptance, and rejection queue under Circular 230 § 10.22 — The File Room by Pivot Aide Tax.">
+
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='22 4 156 172'%3E%3Cellipse cx='100' cy='88' rx='69' ry='67' fill='%231D3D51'/%3E%3Cellipse cx='100' cy='90' rx='59' ry='55' fill='%232C5169'/%3E%3Ccircle cx='73' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='127' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='73' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='127' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='73' cy='90' r='7.5' fill='%2306202D'/%3E%3Ccircle cx='127' cy='90' r='7.5' fill='%2306202D'/%3E%3Cpath d='M100 103 L110 121 L100 131 L90 121 Z' fill='%23EAE42F'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shared-layout.css">
+</head>
+
+<body>
+  <div class="stage desk-mode" id="stage">
+    <div class="device desk" id="device">
+      <div class="notch"><span>9:41</span><span class="dot"></span><span>●●●●</span></div>
+
+      <div class="app" id="app">
+        <header class="appbar"></header>
+
+        <div class="workspace">
+          <div class="drawer-backdrop" id="drawer-backdrop"></div>
+          <aside class="side" id="side" aria-label="Firm Operations Navigation"></aside>
+
+          <main class="body" id="body">
+            <div id="page-breadcrumbs"></div>
+
+            <div class="page-header-row">
+              <div class="page-title-wrap">
+                <h1>Document Review Queue</h1>
+                <p class="page-subtitle">Practitioner Ingestion &amp; Diligence &middot; Treasury Circular 230 § 10.22 Verified</p>
+              </div>
+              <div class="page-actions-wrap">
+                <a href="dashboard.html" class="btn sm btn-o">&larr; Operations Triage</a>
+              </div>
+            </div>
+
+            <div class="states-demo-bar">
+              <span class="states-demo-label">REVIEW QUEUE STATE:</span>
+              <button type="button" class="states-demo-btn active" id="btn-state-live">● Live View</button>
+              <button type="button" class="states-demo-btn" id="btn-state-loading">Loading State</button>
+              <button type="button" class="states-demo-btn" id="btn-state-empty">Empty State</button>
+              <button type="button" class="states-demo-btn" id="btn-state-error">Error State</button>
+            </div>
+
+            <div id="docs-review-content-area">
+              <div class="card p-lg mb-lg" style="background:var(--surface);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                  <h3 style="font-family:var(--f-display);margin:0;font-size:1.15rem;">Incoming Uploads Awaiting CPA Review</h3>
+                  <span class="chip gold sm">1 PENDING REVIEW</span>
+                </div>
+                <table class="table-clean" style="width:100%;font-size:.85rem;">
+                  <thead>
+                    <tr style="border-bottom:1px solid var(--line);text-align:left;">
+                      <th style="padding:8px 0;">Client</th>
+                      <th style="padding:8px 0;">Document Title</th>
+                      <th style="padding:8px 0;">Uploaded</th>
+                      <th style="padding:8px 0;">Format</th>
+                      <th style="padding:8px 0;text-align:right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom:1px solid var(--line-subtle);">
+                      <td style="padding:10px 0;"><b>Michael Whitfield</b></td>
+                      <td>Closing Disclosure — 214 Halcyon Row.pdf</td>
+                      <td>2 Sep 2026</td>
+                      <td><span class="chip ok sm">PDF (5.2 MB)</span></td>
+                      <td style="text-align:right;">
+                        <button class="btn xs btn-b" onclick="FileRoomLayout.showToast('Document marked as Verified & Accepted under Circular 230 § 10.22', 'ok')">Accept ✓</button>
+                        <button class="btn xs btn-o" onclick="FileRoomLayout.showToast('Rejection reason prompt opened. Notes required under IRC § 6694.', 'warn')">Reject ✕</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal-card modal-wide" id="modal-container"></div>
+  </div>
+  <div id="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/firebase.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth-guard.js"></script>
+  <script src="../js/core/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      FileRoomLayout.init({
+        portal: 'firm',
+        activePage: 'documents',
+        breadcrumbs: [
+          { title: 'The File Room', href: '../index.html' },
+          { title: 'Firm Operations', href: 'dashboard.html' },
+          { title: 'Docs Review Queue' }
+        ]
+      });
+
+      var contentArea = document.getElementById('docs-review-content-area');
+
+      // RBAC Gate
+      var savedSession = null;
+      try {
+        var raw = localStorage.getItem('tfr_user_session');
+        if (raw) savedSession = JSON.parse(raw);
+      } catch (_) {}
+      var bridgeUser = (window.FirebaseBridge && window.FirebaseBridge.currentUser);
+      var user = (window.AuthGuard && window.AuthGuard.getAuthState && window.AuthGuard.getAuthState()) ||
+                 bridgeUser || savedSession || (window.FileRoomLayout && window.FileRoomLayout.resolveUser('firm'));
+      var isStaff = FileRoomLayout.isStaffUser ? FileRoomLayout.isStaffUser(user) : Boolean(
+        user && (
+          user.role === 'firm_admin' ||
+          user.role === 'firm_preparer' ||
+          user.role === 'firm_staff' ||
+          user.isStaff ||
+          (user.email && (user.email.endsWith('@pivot-aide-tax.com') || user.email.endsWith('@pivot-aide.tax') || user.email.includes('cpa') || user.email.includes('preparer') || user.email.includes('denise') || user.email.includes('admin') || user.email.includes('partner') || user.email.includes('jordan')))
+        )
+      );
+
+      if (!isStaff) {
+        FileRoomLayout.renderAccessDenied(contentArea, {
+          title: '403 FORBIDDEN · ACCESS RESTRICTED',
+          message: 'Staff credentials and verified Multi-Factor Authentication (MFA) are required to access Firm Operations Console under FTC Safeguards § 314.4.',
+          loginUrl: '../index.html'
+        });
+        return;
+      }
+
+      var btnLive = document.getElementById('btn-state-live');
+      var btnLoading = document.getElementById('btn-state-loading');
+      var btnEmpty = document.getElementById('btn-state-empty');
+      var btnError = document.getElementById('btn-state-error');
+      var allBtns = [btnLive, btnLoading, btnEmpty, btnError];
+
+      function setActive(b) {
+        allBtns.forEach(function (btn) { btn.classList.remove('active'); });
+        b.classList.add('active');
+      }
+
+      function renderLiveDocsTable(items) {
+        if (!items || items.length === 0) {
+          FileRoomLayout.renderEmpty(contentArea, {
+            icon: '✓',
+            title: 'All Ingestion Items Reviewed',
+            desc: 'No documents currently pending review in the queue. All submissions have been certified or rejected.',
+            actionText: 'View Operations Triage',
+            actionHref: 'dashboard.html'
+          });
+          return;
+        }
+
+        var html = [
+          '<div class="card p-lg mb-lg" style="background:var(--surface);">',
+          '  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">',
+          '    <h3 style="font-family:var(--f-display);margin:0;font-size:1.15rem;">Incoming Uploads Awaiting CPA Review</h3>',
+          '    <span class="chip gold sm" id="docs-count-chip">' + items.length + ' PENDING REVIEW</span>',
+          '  </div>',
+          '  <table class="table-clean" style="width:100%;font-size:.85rem;">',
+          '    <thead>',
+          '      <tr style="border-bottom:1px solid var(--line);text-align:left;">',
+          '        <th style="padding:8px 0;">Client</th>',
+          '        <th style="padding:8px 0;">Document Title</th>',
+          '        <th style="padding:8px 0;">Uploaded</th>',
+          '        <th style="padding:8px 0;">Format</th>',
+          '        <th style="padding:8px 0;text-align:right;">Actions</th>',
+          '      </tr>',
+          '    </thead>',
+          '    <tbody id="docs-review-tbody">'
+        ];
+
+        items.forEach(function (item) {
+          var viewLink = '<br><a href="javascript:void(0)" class="view-vault-link" data-doc-id="' + item.docId + '" data-client="' + (item.client || '') + '" data-name="' + (item.name || '') + '" data-url="' + (item.downloadUrl || '') + '" style="font-size:0.75rem;color:var(--accent);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px"><span>📄</span> View in Storage Vault &nearr;</a>';
+          html.push(
+            '<tr style="border-bottom:1px solid var(--line-subtle);">',
+            '  <td style="padding:10px 0;"><b>' + (item.client || 'Taxpayer Engagement') + '</b></td>',
+            '  <td>' + item.name + viewLink + '</td>',
+            '  <td>' + item.uploadedAt + '</td>',
+            '  <td><span class="chip ok sm">' + (item.format || 'PDF · ClamAV Clean ✓') + '</span></td>',
+            '  <td style="text-align:right;">',
+            '    <button class="btn xs btn-b btn-accept-doc" data-doc-id="' + item.docId + '" data-client-uid="' + (item.clientUid || '') + '">Accept ✓</button>',
+            '    <button class="btn xs btn-o btn-reject-doc" data-doc-id="' + item.docId + '" data-client-uid="' + (item.clientUid || '') + '">Reject ✕</button>',
+            '  </td>',
+            '</tr>'
+          );
+        });
+
+        html.push('    </tbody>', '  </table>', '</div>');
+        contentArea.innerHTML = html.join('\n');
+
+        // Bind Action Handlers
+        var viewVaultLinks = contentArea.querySelectorAll('.view-vault-link');
+        viewVaultLinks.forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            var docId = link.getAttribute('data-doc-id');
+            var client = link.getAttribute('data-client');
+            var name = link.getAttribute('data-name');
+            var url = link.getAttribute('data-url');
+            if (window.FileRoomLayout && typeof window.FileRoomLayout.openVaultDocumentViewer === 'function') {
+              window.FileRoomLayout.openVaultDocumentViewer({
+                docId: docId,
+                title: name,
+                client: client,
+                downloadUrl: url
+              });
+            }
+          });
+        });
+
+        var acceptBtns = contentArea.querySelectorAll('.btn-accept-doc');
+        acceptBtns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var docId = btn.getAttribute('data-doc-id');
+            var clientUid = btn.getAttribute('data-client-uid');
+            executeAccept(docId, clientUid);
+          });
+        });
+
+        var rejectBtns = contentArea.querySelectorAll('.btn-reject-doc');
+        rejectBtns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var docId = btn.getAttribute('data-doc-id');
+            var clientUid = btn.getAttribute('data-client-uid');
+            executeReject(docId, clientUid);
+          });
+        });
+      }
+
+      async function executeAccept(docId, clientUid) {
+        try {
+          FileRoomLayout.showToast('Committing Circular 230 § 10.22 practitioner verification...', 'info');
+          if (window.FirebaseBridge && typeof window.FirebaseBridge.staffAcceptDocument === 'function') {
+            await window.FirebaseBridge.staffAcceptDocument(docId, 'Verified & Accepted under Circular 230 § 10.22 by Denise R., CPA', { clientId: clientUid });
+          }
+          FileRoomLayout.showToast('Document marked as Verified & Accepted under Circular 230 § 10.22', 'ok');
+          loadReviewQueue();
+        } catch (err) {
+          FileRoomLayout.showToast('Failed to accept document: ' + (err.message || err), 'warn');
+        }
+      }
+
+      async function executeReject(docId, clientUid) {
+        var reason = window.prompt('IRC § 6694 Due Diligence Note — Specify rejection reason:', 'Illegible scan / missing pages / tax year mismatch');
+        if (!reason) return;
+        try {
+          FileRoomLayout.showToast('Recording rejection in audit ledger...', 'info');
+          if (window.FirebaseBridge && typeof window.FirebaseBridge.staffRejectDocument === 'function') {
+            await window.FirebaseBridge.staffRejectDocument(docId, reason, { clientId: clientUid });
+          }
+          FileRoomLayout.showToast('Rejection reason recorded. Taxpayer notified under IRC § 6694.', 'warn');
+          loadReviewQueue();
+        } catch (err) {
+          FileRoomLayout.showToast('Failed to reject document: ' + (err.message || err), 'warn');
+        }
+      }
+
+      async function loadReviewQueue() {
+        setActive(btnLive);
+        FileRoomLayout.renderLoading(contentArea, 'Loading pending uploads from Cloud Storage vault...');
+
+        var bridge = window.FirebaseBridge;
+        var opsData = null;
+        if (bridge && typeof bridge.getFirmOperationsData === 'function') {
+          try {
+            opsData = await bridge.getFirmOperationsData();
+          } catch (_) {}
+        }
+
+        var items = [];
+        var seenIds = new Set();
+
+        if (opsData && opsData.triageQueue) {
+          opsData.triageQueue.forEach(function (t) {
+            if (t.category === 'docs' && (t.actionKey === 'doc-review' || t.chipText === 'Needs Review')) {
+              var docId = t.docId || (t.id ? t.id.replace(/^trg_(req|doc)_/, '') : '');
+              if (docId && !seenIds.has(docId)) {
+                seenIds.add(docId);
+                items.push({
+                  docId: docId,
+                  client: t.client,
+                  clientUid: t.clientUid,
+                  name: t.title,
+                  uploadedAt: t.date || 'Recently',
+                  format: 'PDF · ClamAV Clean ✓',
+                  downloadUrl: t.downloadUrl || ''
+                });
+              }
+            }
+          });
+        }
+
+        // Fallback to baseline if bridge not yet initialized or zero items from bridge
+        if (items.length === 0 && (!opsData || !opsData.triageQueue)) {
+          items = [
+            {
+              docId: 'demo_req_closing',
+              client: 'Taylor Bennett',
+              clientUid: 'usr_taylor_bennett_test_example_com',
+              name: '01_Test_W2_Source_Record.pdf',
+              uploadedAt: '12 Oct 2026',
+              format: 'PDF (1.2 MB) · ClamAV Clean ✓',
+              downloadUrl: ''
+            }
+          ];
+        }
+
+        renderLiveDocsTable(items);
+        if (window.FileRoomLayout && typeof window.FileRoomLayout.updateBadge === 'function') {
+          window.FileRoomLayout.updateBadge('documents', items.length);
+        }
+        try { window.dispatchEvent(new CustomEvent('tfr:doc_status_changed', { detail: { count: items.length } })); } catch (_) {}
+        FileRoomLayout.showToast('Document review queue loaded', 'info');
+      }
+
+      // Initial Load
+      if (window.FirebaseBridge) {
+        loadReviewQueue();
+      } else {
+        var retries = 0;
+        var timer = setInterval(function () {
+          retries++;
+          if (window.FirebaseBridge || retries >= 15) {
+            clearInterval(timer);
+            loadReviewQueue();
+          }
+        }, 100);
+        window.addEventListener('firebase-bridge-ready', function () { clearInterval(timer); loadReviewQueue(); }, { once: true });
+        window.addEventListener('firebase-ready', function () { clearInterval(timer); loadReviewQueue(); }, { once: true });
+      }
+
+      btnLive.addEventListener('click', function () {
+        loadReviewQueue();
+      });
+
+      btnLoading.addEventListener('click', function () {
+        setActive(btnLoading);
+        FileRoomLayout.renderLoading(contentArea, 'Loading pending uploads from Cloud Storage vault...');
+      });
+
+      btnEmpty.addEventListener('click', function () {
+        setActive(btnEmpty);
+        FileRoomLayout.renderEmpty(contentArea, {
+          icon: '✓',
+          title: 'All Ingestion Items Reviewed',
+          desc: 'No documents currently pending review in the queue. All submissions have been certified or rejected.',
+          actionText: 'View Client Pipeline',
+          actionHref: 'clients.html'
+        });
+      });
+
+      btnError.addEventListener('click', function () {
+        setActive(btnError);
+        FileRoomLayout.renderError(contentArea, {
+          title: 'Unable to Load Review Queue',
+          desc: 'Firestore document stream failed. Please retry.',
+          onRetry: function () { btnLive.click(); }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

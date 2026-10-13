@@ -1,0 +1,19 @@
+{
+  "name": "the-file-room-cloud-functions",
+  "version": "1.0.0",
+  "description": "Trusted Backend Operations for Pivot Aide Tax — The File Room",
+  "main": "index.mjs",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "node --test ../tests/backend-cloud-functions.test.mjs",
+    "lint": "node -c index.mjs src/*.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "private": true
+}

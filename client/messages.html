@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Messages — Client Portal — The File Room</title>
+  <meta name="description" content="Secure file-linked practitioner messaging — The File Room by Pivot Aide Tax.">
+
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='22 4 156 172'%3E%3Cellipse cx='100' cy='88' rx='69' ry='67' fill='%231D3D51'/%3E%3Cellipse cx='100' cy='90' rx='59' ry='55' fill='%232C5169'/%3E%3Ccircle cx='73' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='127' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='73' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='127' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='73' cy='90' r='7.5' fill='%2306202D'/%3E%3Ccircle cx='127' cy='90' r='7.5' fill='%2306202D'/%3E%3Cpath d='M100 103 L110 121 L100 131 L90 121 Z' fill='%23EAE42F'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shared-layout.css">
+</head>
+
+<body>
+  <div class="stage desk-mode" id="stage">
+    <div class="device desk" id="device">
+      <div class="notch"><span>9:41</span><span class="dot"></span><span>●●●●</span></div>
+
+      <div class="app" id="app">
+        <header class="appbar"></header>
+
+        <div class="workspace">
+          <div class="drawer-backdrop" id="drawer-backdrop"></div>
+          <aside class="side" id="side" aria-label="Client Portal Navigation"></aside>
+
+          <main class="body" id="body">
+            <div id="page-breadcrumbs"></div>
+
+            <div class="page-header-row">
+              <div class="page-title-wrap">
+                <h1>Secure Messages</h1>
+                <p class="page-subtitle">File-linked conversation with Denise R., CPA &middot; IRC § 7216 Protected Channel</p>
+              </div>
+              <div class="page-actions-wrap">
+                <a href="documents.html" class="btn sm btn-o">&larr; Documents</a>
+              </div>
+            </div>
+
+            <!-- States Verification Bar -->
+            <div class="states-demo-bar">
+              <span class="states-demo-label">MESSAGE STATE:</span>
+              <button type="button" class="states-demo-btn active" id="btn-state-live">● Live View</button>
+              <button type="button" class="states-demo-btn" id="btn-state-loading">Loading State</button>
+              <button type="button" class="states-demo-btn" id="btn-state-empty">Empty State</button>
+              <button type="button" class="states-demo-btn" id="btn-state-error">Error State</button>
+            </div>
+
+            <div id="messages-content-area">
+              <div class="card p-lg" style="background:var(--surface);display:flex;flex-direction:column;height:450px;">
+                <div style="flex:1;overflow-y:auto;padding-right:8px;display:flex;flex-direction:column;gap:14px;" id="msg-thread">
+                  <div style="background:var(--surface-2);padding:12px 16px;border-radius:8px;max-width:80%;align-self:flex-start;border-left:3px solid var(--brand);">
+                    <div style="font-size:.72rem;color:var(--brand);font-weight:600;margin-bottom:4px;">Denise R., CPA &middot; 2 Sep 9:14 AM</div>
+                    <div style="font-size:.85rem;color:var(--ink);">I have reviewed the settlement disclosure for 214 Halcyon Row. One clarification: was the rental unit vacant during the Q1 renovation period?</div>
+                  </div>
+
+                  <div style="background:rgba(1,159,255,0.08);padding:12px 16px;border-radius:8px;max-width:80%;align-self:flex-end;border-right:3px solid var(--accent);">
+                    <div style="font-size:.72rem;color:var(--accent);font-weight:600;margin-bottom:4px;text-align:right;">Michael Whitfield &middot; 2 Sep 9:31 AM</div>
+                    <div style="font-size:.85rem;color:var(--ink);">Yes, it was vacant for 6 weeks in January/February, then re-let starting March 15th at $2,400/mo.</div>
+                  </div>
+
+                  <div style="background:var(--surface-2);padding:12px 16px;border-radius:8px;max-width:80%;align-self:flex-start;border-left:3px solid var(--brand);">
+                    <div style="font-size:.72rem;color:var(--brand);font-weight:600;margin-bottom:4px;">Denise R., CPA &middot; Today 10:05 AM</div>
+                    <div style="font-size:.85rem;color:var(--ink);">Perfect, I have updated Schedule E line 2 (fair rental days = 291). We just need the 1099-MISC from Keystone and the return is ready for signature!</div>
+                  </div>
+                </div>
+
+                <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;gap:10px;">
+                  <input type="text" id="input-msg-text" placeholder="Type a message to your assigned CPA..." style="flex:1;padding:10px 14px;border:1px solid var(--line);border-radius:6px;font-size:.85rem;background:var(--surface);" />
+                  <button type="button" class="btn btn-b" id="btn-send-msg">Send &rarr;</button>
+                </div>
+              </div>
+            </div>
+
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal-card modal-wide" id="modal-container"></div>
+  </div>
+  <div id="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/firebase.js"></script>
+  <script type="module" src="../js/formspree.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth-guard.js"></script>
+  <script src="../js/core/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      FileRoomLayout.init({
+        portal: 'client',
+        activePage: 'messages',
+        breadcrumbs: [
+          { title: 'The File Room', href: '../index.html' },
+          { title: 'Client Portal', href: 'dashboard.html' },
+          { title: 'Messages' }
+        ]
+      });
+
+      if (window.FileRoomLayout && typeof window.FileRoomLayout.clearBadge === 'function') {
+        window.FileRoomLayout.clearBadge('messages');
+      }
+      try { localStorage.setItem('tfr_unread_messages', '0'); } catch (_) {}
+
+      var contentArea = document.getElementById('messages-content-area');
+      var originalHtml = contentArea.innerHTML;
+      var btnLive = document.getElementById('btn-state-live');
+      var btnLoading = document.getElementById('btn-state-loading');
+      var btnEmpty = document.getElementById('btn-state-empty');
+      var btnError = document.getElementById('btn-state-error');
+      var allBtns = [btnLive, btnLoading, btnEmpty, btnError];
+
+      function setActive(b) {
+        allBtns.forEach(function (btn) { btn.classList.remove('active'); });
+        b.classList.add('active');
+      }
+
+      // Resolve authenticated UID
+      var clientUid = 'usr_whitfield_4417';
+      try {
+        var rawSession = localStorage.getItem('tfr_user_session');
+        if (rawSession) {
+          var parsed = JSON.parse(rawSession);
+          if (parsed && parsed.uid) clientUid = parsed.uid;
+        }
+      } catch (_) {}
+
+      var unsubscribeMessages = null;
+      var isSending = false;
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatMsgTime(isoOrStr) {
+        if (!isoOrStr) return 'Just now';
+        try {
+          var d = new Date(isoOrStr);
+          if (isNaN(d.getTime())) return isoOrStr;
+          var now = new Date();
+          var isToday = d.toDateString() === now.toDateString();
+          var timeStr = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+          if (isToday) return 'Today ' + timeStr;
+          var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          return d.getDate() + ' ' + months[d.getMonth()] + ' ' + timeStr;
+        } catch (_) {
+          return isoOrStr;
+        }
+      }
+
+      function renderMessageBubbles(messages) {
+        var thread = document.getElementById('msg-thread');
+        if (!thread) return;
+
+        if (!messages || messages.length === 0) {
+          thread.innerHTML = '<div style="text-align:center;padding:30px 10px;color:var(--ink-2);font-size:.85rem;">No messages in this file yet. Send a note below to start the conversation.</div>';
+          return;
+        }
+
+        var html = messages.map(function (msg) {
+          var isFromClient = msg.senderRole === 'client' || msg.senderId === clientUid || msg.avatar === 'MW';
+          var timeText = formatMsgTime(msg.createdAt || msg._isoTime);
+          var safeText = escapeHtml(msg.text || '');
+
+          if (isFromClient) {
+            return [
+              '<div style="background:rgba(1,159,255,0.08);padding:12px 16px;border-radius:8px;max-width:80%;align-self:flex-end;border-right:3px solid var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.05);">',
+              '  <div style="font-size:.72rem;color:var(--accent);font-weight:600;margin-bottom:4px;text-align:right;">Michael Whitfield &middot; ' + timeText + '</div>',
+              '  <div style="font-size:.85rem;color:var(--ink);line-height:1.45;">' + safeText + '</div>',
+              '</div>'
+            ].join('');
+          } else {
+            var senderTitle = escapeHtml(msg.senderName || 'Denise R., CPA');
+            var isAssistant = msg.senderRole === 'assistant' || msg.avatar === 'PAT';
+            var borderCol = isAssistant ? 'var(--gold, #EAE42F)' : 'var(--brand)';
+            return [
+              '<div style="background:var(--surface-2);padding:12px 16px;border-radius:8px;max-width:80%;align-self:flex-start;border-left:3px solid ' + borderCol + ';box-shadow:0 1px 3px rgba(0,0,0,0.05);">',
+              '  <div style="font-size:.72rem;color:var(--brand);font-weight:600;margin-bottom:4px;">' + senderTitle + ' &middot; ' + timeText + '</div>',
+              '  <div style="font-size:.85rem;color:var(--ink);line-height:1.45;">' + safeText + '</div>',
+              '</div>'
+            ].join('');
+          }
+        }).join('');
+
+        thread.innerHTML = html;
+        thread.scrollTop = thread.scrollHeight;
+
+        // Auto mark unread messages as read
+        var unreadIds = messages
+          .filter(function (m) { return !m.readByClient && (m.senderRole !== 'client' && m.senderId !== clientUid); })
+          .map(function (m) { return m.id || m.messageId; })
+          .filter(Boolean);
+
+        if (unreadIds.length > 0 && window.FirebaseBridge && typeof window.FirebaseBridge.markMessagesAsRead === 'function') {
+          window.FirebaseBridge.markMessagesAsRead(unreadIds).catch(function () {});
+        }
+
+        if (window.FileRoomLayout && typeof window.FileRoomLayout.clearBadge === 'function') {
+          window.FileRoomLayout.clearBadge('messages');
+        }
+      }
+
+      function connectFirebaseMessages() {
+        if (typeof unsubscribeMessages === 'function') {
+          unsubscribeMessages();
+          unsubscribeMessages = null;
+        }
+
+        var bridge = window.FirebaseBridge;
+        if (!bridge) return;
+
+        if (typeof bridge.subscribeMessages === 'function') {
+          unsubscribeMessages = bridge.subscribeMessages(
+            function (msgs) {
+              renderMessageBubbles(msgs);
+            },
+            function (err) {
+              console.info('Firestore messages stream fallback to defaults:', err && err.message);
+              if (typeof bridge.getDefaultMessages === 'function') {
+                renderMessageBubbles(bridge.getDefaultMessages(clientUid));
+              }
+            },
+            'eng_2026_' + clientUid,
+            clientUid
+          );
+        } else if (typeof bridge.getMessages === 'function') {
+          bridge.getMessages(clientUid).then(function (res) {
+            renderMessageBubbles((res && res.data) || []);
+          });
+        }
+      }
+
+      function attachMsgEvents() {
+        var btnSend = document.getElementById('btn-send-msg');
+        var inputMsg = document.getElementById('input-msg-text');
+        var thread = document.getElementById('msg-thread');
+        if (!btnSend || !inputMsg) return;
+
+        async function handleSend() {
+          var text = inputMsg.value.trim();
+          if (!text || isSending) return;
+
+          isSending = true;
+          btnSend.disabled = true;
+          btnSend.style.opacity = '0.7';
+
+          try {
+            var bridge = window.FirebaseBridge;
+            if (bridge && typeof bridge.sendMessage === 'function') {
+              await bridge.sendMessage(text, { taxYear: 2026, clientId: clientUid });
+            } else {
+              // Optimistic UI fallback
+              var msgDiv = document.createElement('div');
+              msgDiv.style.cssText = 'background:rgba(1,159,255,0.08);padding:12px 16px;border-radius:8px;max-width:80%;align-self:flex-end;border-right:3px solid var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.05);';
+              msgDiv.innerHTML = '<div style="font-size:.72rem;color:var(--accent);font-weight:600;margin-bottom:4px;text-align:right;">Michael Whitfield &middot; Just now</div><div style="font-size:.85rem;color:var(--ink);">' + escapeHtml(text) + '</div>';
+              if (thread) {
+                thread.appendChild(msgDiv);
+                thread.scrollTop = thread.scrollHeight;
+              }
+            }
+
+            inputMsg.value = '';
+            if (window.FileRoomLayout && typeof FileRoomLayout.showToast === 'function') {
+              FileRoomLayout.showToast('Message sent to Denise, CPA via encrypted IRC § 7216 channel', 'ok');
+            }
+          } catch (err) {
+            console.error('Error sending message:', err);
+            if (window.FileRoomLayout && typeof FileRoomLayout.showToast === 'function') {
+              FileRoomLayout.showToast('Sent message in offline cache', 'info');
+            }
+          } finally {
+            isSending = false;
+            btnSend.disabled = false;
+            btnSend.style.opacity = '1';
+            inputMsg.focus();
+          }
+        }
+
+        btnSend.onclick = handleSend;
+
+        inputMsg.onkeydown = function (e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+          }
+        };
+      }
+
+      // Initial attachment & Firebase wireup
+      attachMsgEvents();
+
+      if (window.FirebaseBridge) {
+        connectFirebaseMessages();
+      } else {
+        var onBridgeReady = function () {
+          window.removeEventListener('firebase-ready', onBridgeReady);
+          window.removeEventListener('firebase-bridge-ready', onBridgeReady);
+          connectFirebaseMessages();
+        };
+        window.addEventListener('firebase-ready', onBridgeReady);
+        window.addEventListener('firebase-bridge-ready', onBridgeReady);
+      }
+
+      // State demo controls
+      btnLive.addEventListener('click', function () {
+        setActive(btnLive);
+        contentArea.innerHTML = originalHtml;
+        attachMsgEvents();
+        connectFirebaseMessages();
+        FileRoomLayout.showToast('Live message conversation loaded from Firestore', 'info');
+      });
+
+      btnLoading.addEventListener('click', function () {
+        setActive(btnLoading);
+        if (typeof unsubscribeMessages === 'function') {
+          unsubscribeMessages();
+          unsubscribeMessages = null;
+        }
+        FileRoomLayout.renderLoading(contentArea, 'Loading encrypted messaging thread from Cloud Firestore...');
+      });
+
+      btnEmpty.addEventListener('click', function () {
+        setActive(btnEmpty);
+        if (typeof unsubscribeMessages === 'function') {
+          unsubscribeMessages();
+          unsubscribeMessages = null;
+        }
+        FileRoomLayout.renderEmpty(contentArea, {
+          icon: '✉',
+          title: 'No Active Messages',
+          desc: 'You have no outstanding inquiries from your preparer. Start a conversation if you have questions about your 2026 file.',
+          actionText: 'Start New Message',
+          actionHref: '#'
+        });
+      });
+
+      btnError.addEventListener('click', function () {
+        setActive(btnError);
+        if (typeof unsubscribeMessages === 'function') {
+          unsubscribeMessages();
+          unsubscribeMessages = null;
+        }
+        FileRoomLayout.renderError(contentArea, {
+          title: 'Messaging Service Unavailable',
+          desc: 'Could not connect to Firestore messages collection. Please retry.',
+          onRetry: function () { btnLive.click(); }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

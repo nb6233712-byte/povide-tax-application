@@ -1,0 +1,695 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Uncle Pat</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Poppins:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* ============================================================
+   UNCLE PAT — character mark specimen sheet
+   Palette and type inherited from the Pivot Aide Tax system.
+   Specimen plates keep literal grounds: a colour proof must not
+   shift with the viewer's theme. Only the page chrome is themed.
+   ============================================================ */
+:root{
+  --ink:#0C1D28;
+  --ink-2:#3F5A6B;
+  --ink-3:#6E8797;
+  --paper:#F4F7F9;
+  --surface:#FFFFFF;
+  --line:#D6E2EA;
+  --line-2:#E7EFF4;
+  --brand:#019FFF;
+  --blue:#0A6BA8;
+  --gold:#EAE42F;
+  --gold-dp:#9E9915;
+  --night:#07202E;
+  --night-2:#0B2C3E;
+  --night-line:rgba(255,255,255,.16);
+  --night-ink:#DCEBF3;
+  --night-ink-2:#9FBECF;
+
+  --f-display:'Fraunces', Georgia, 'Times New Roman', serif;
+  --f-body:'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --shell:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#08202A; --surface:#0E2C3A; --line:#1E4356; --line-2:#173846;
+    --ink:#E6F1F7; --ink-2:#A8C3D2; --ink-3:#7B9AAB; --blue:#3FB4FF; --gold-dp:#EAE42F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#08202A; --surface:#0E2C3A; --line:#1E4356; --line-2:#173846;
+  --ink:#E6F1F7; --ink-2:#A8C3D2; --ink-3:#7B9AAB; --blue:#3FB4FF; --gold-dp:#EAE42F;
+}
+
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--f-body); font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased; }
+h1,h2,h3{ font-family:var(--f-display); margin:0; line-height:1.1;
+  letter-spacing:-.018em; text-wrap:balance; font-variation-settings:'SOFT' 20; }
+p{ margin:0; max-width:66ch; }
+svg.owl{ display:block; width:100%; height:auto; }
+
+.shell{ width:100%; max-width:var(--shell); margin:0 auto; padding:0 26px; }
+.eyebrow{ font-family:var(--f-mono); font-size:.63rem; letter-spacing:.19em;
+  text-transform:uppercase; color:var(--ink-3); }
+.eyebrow.on-night{ color:var(--gold); }
+
+/* ---------- hero ---------- */
+.hero{ background:var(--night); color:#fff; padding:56px 0 60px; }
+.hero .in{ display:grid; grid-template-columns:300px 1fr; gap:52px; align-items:center; }
+.hero .plate{ background:var(--night-2); border:1px solid var(--night-line);
+  padding:30px; display:grid; gap:18px; }
+.hero h1{ font-size:clamp(2.4rem,5vw,3.6rem); font-weight:300; color:#fff; margin-top:16px; }
+.hero h1 em{ font-style:normal; color:var(--gold); font-weight:400; }
+.hero .lede{ color:var(--night-ink-2); font-size:1.02rem; margin-top:16px; max-width:52ch; }
+.hero dl{ margin:26px 0 0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px; background:var(--night-line); border:1px solid var(--night-line); }
+.hero dl > div{ background:var(--night); padding:14px 16px; }
+.hero dt{ font-family:var(--f-mono); font-size:.6rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--night-ink-2); }
+.hero dd{ margin:5px 0 0; font-size:.9rem; color:#fff; }
+
+/* ground switcher — a mark review needs to see it on real grounds */
+.grounds{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.grounds button{ width:30px; height:30px; border-radius:50%; border:1px solid var(--night-line);
+  cursor:pointer; padding:0; font:inherit; }
+.grounds button[aria-pressed="true"]{ box-shadow:0 0 0 2px var(--night), 0 0 0 4px var(--gold); }
+.grounds .cap{ font-family:var(--f-mono); font-size:.6rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--night-ink-2); margin-left:6px; }
+
+/* ---------- sections ---------- */
+section{ padding:52px 0; border-top:1px solid var(--line); }
+.sechead{ max-width:64ch; margin-bottom:26px; }
+.sechead h2{ font-size:clamp(1.5rem,2.6vw,2rem); font-weight:400; margin:9px 0 8px; }
+.sechead p{ color:var(--ink-2); font-size:.94rem; }
+
+/* ---------- specimen plates ---------- */
+.plates{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+  background:var(--line); border:1px solid var(--line); }
+.plate{ background:var(--surface); display:flex; flex-direction:column; }
+.plate .art{ flex:1; display:flex; align-items:center; justify-content:center;
+  padding:26px 22px 22px; min-height:170px; }
+.plate .art svg{ width:104px; }
+.plate .cap{ border-top:1px solid var(--line-2); padding:11px 14px;
+  font-family:var(--f-mono); font-size:.6rem; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-3); display:flex; justify-content:space-between; gap:10px; }
+.plate .cap b{ color:var(--ink); font-weight:500; }
+/* literal specimen grounds — deliberately not themed */
+.g-white{ background:#FFFFFF; }
+.g-paper{ background:#F4F7F9; }
+.g-night{ background:#07202E; }
+.g-blue { background:#0A6BA8; }
+.g-gold { background:#EAE42F; }
+.g-brand{ background:#019FFF; }
+
+/* ---------- size ladder ---------- */
+.sizes{ display:flex; align-items:flex-end; gap:34px; flex-wrap:wrap;
+  border:1px solid var(--line); background:var(--surface); padding:30px 28px 22px; }
+.sizes figure{ margin:0; display:flex; flex-direction:column; align-items:center; gap:11px; }
+.sizes figcaption{ font-family:var(--f-mono); font-size:.6rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3); text-align:center; }
+.sizes figcaption b{ display:block; color:var(--ink); font-weight:500; }
+
+/* ---------- anatomy ---------- */
+.anat{ display:grid; grid-template-columns:minmax(0,300px) 1fr; gap:44px; align-items:center; }
+.anat .fig{ background:var(--night); border:1px solid var(--line); padding:26px; }
+.parts{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+.part{ background:var(--surface); display:grid; grid-template-columns:118px 1fr;
+  gap:18px; padding:15px 18px; align-items:baseline; }
+.part dt{ font-family:var(--f-mono); font-size:.63rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--blue); }
+.part dd{ margin:0; font-size:.89rem; color:var(--ink-2); }
+.part dd b{ color:var(--ink); font-weight:500; }
+
+/* ---------- colour ---------- */
+.swatches{ display:grid; grid-template-columns:repeat(6,1fr); gap:1px;
+  background:var(--line); border:1px solid var(--line); }
+.sw{ background:var(--surface); }
+.sw .chip{ height:88px; }
+.sw .meta{ padding:12px 14px; }
+.sw .n{ font-size:.85rem; font-weight:500; }
+.sw .hex{ font-family:var(--f-mono); font-size:.72rem; color:var(--ink-3); margin-top:3px; }
+.sw .use{ font-size:.76rem; color:var(--ink-2); margin-top:6px; line-height:1.45; }
+
+/* ---------- lockups ---------- */
+.locks{ display:grid; grid-template-columns:1fr 1fr; gap:1px;
+  background:var(--line); border:1px solid var(--line); }
+.lock{ background:var(--surface); padding:34px 30px; display:flex; flex-direction:column; gap:22px; }
+.lock.night{ background:var(--night); }
+.lockup{ display:flex; align-items:center; gap:14px; }
+.lockup svg{ width:52px; flex:none; }
+.lockup .wm{ font-family:var(--f-display); font-weight:600; font-size:1.5rem;
+  letter-spacing:-.025em; line-height:1; }
+.lockup .wm span{ color:var(--brand); font-weight:400; }
+.lock.night .lockup .wm{ color:#fff; }
+.lockup.stack{ flex-direction:column; align-items:flex-start; gap:12px; }
+.lockup.stack svg{ width:60px; }
+.lock .cap{ font-family:var(--f-mono); font-size:.6rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--ink-3); margin-top:auto; }
+.lock.night .cap{ color:var(--night-ink-2); }
+
+/* ---------- rules ---------- */
+.rules{ display:grid; grid-template-columns:1fr 1fr; gap:1px;
+  background:var(--line); border:1px solid var(--line); }
+.rule{ background:var(--surface); padding:20px 22px; display:grid; gap:7px; }
+.rule .k{ font-family:var(--f-mono); font-size:.6rem; letter-spacing:.15em;
+  text-transform:uppercase; }
+.rule.do .k{ color:#1F8A54; }
+.rule.dont .k{ color:#B4451F; }
+.rule h3{ font-size:1rem; }
+.rule p{ font-size:.85rem; color:var(--ink-2); }
+
+/* ---------- files ---------- */
+.files{ width:100%; border-collapse:collapse; }
+.files th{ text-align:left; font-family:var(--f-mono); font-size:.6rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:400;
+  padding:0 14px 9px 0; border-bottom:1.5px solid var(--ink); }
+.files td{ padding:11px 14px 11px 0; border-bottom:1px solid var(--line-2);
+  font-size:.86rem; vertical-align:top; color:var(--ink-2); }
+.files td:first-child{ font-family:var(--f-mono); font-size:.78rem; color:var(--ink);
+  white-space:nowrap; }
+.tablewrap{ overflow-x:auto; }
+
+footer{ background:var(--night); color:var(--night-ink-2); padding:30px 0 40px;
+  font-size:.82rem; }
+
+@media (max-width:980px){
+  .hero .in{ grid-template-columns:1fr; gap:34px; }
+  .plates{ grid-template-columns:repeat(2,1fr); }
+  .swatches{ grid-template-columns:repeat(3,1fr); }
+  .anat{ grid-template-columns:1fr; gap:28px; }
+  .locks,.rules{ grid-template-columns:1fr; }
+  .hero dl{ grid-template-columns:1fr; }
+}
+@media (max-width:560px){
+  .plates{ grid-template-columns:1fr; }
+  .swatches{ grid-template-columns:repeat(2,1fr); }
+  .part{ grid-template-columns:1fr; gap:4px; }
+}
+@media (prefers-reduced-motion:reduce){ *{ animation:none!important; transition:none!important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="pat" viewBox="0 0 200 220">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#1D3D51"/>
+  <path d="M46 170 C32 184 21 200 16 220 L10 220 C10 209 12 198 16 186 C22 168 33 152 47 141 Z" fill="#163344"/>
+  <path d="M154 170 C168 184 179 200 184 220 L190 220 C190 209 188 198 184 186 C178 168 167 152 153 141 Z" fill="#163344"/>
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#E3ECF3" opacity=".3"/>
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#CFC922"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#EAE42F"/>
+  <path d="M84 178 L116 178 L100 188 Z" fill="#B4AE18" opacity=".5"/>
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#16303F"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#16303F"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#1D3D51"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#2C5169"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#24455B"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="127" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="73" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="127" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="73" cy="90" r="7.5" fill="#06202D"/>
+  <circle cx="127" cy="90" r="7.5" fill="#06202D"/>
+  <circle cx="67" cy="83" r="3.4" fill="#FFFFFF" opacity=".92"/>
+  <circle cx="121" cy="83" r="3.4" fill="#FFFFFF" opacity=".92"/>
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#EAE42F"/>
+  <path d="M100 121 L110 121 L100 131 Z" fill="#B4AE18" opacity=".45"/>
+</symbol>
+<symbol id="pat-flat" viewBox="0 0 200 220">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#1D3D51"/>
+  
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF"/>
+  
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#CFC922"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#EAE42F"/>
+  
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#16303F"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#16303F"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#1D3D51"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#2C5169"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#24455B"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="127" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="73" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="127" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="73" cy="90" r="7.5" fill="#06202D"/>
+  <circle cx="127" cy="90" r="7.5" fill="#06202D"/>
+  
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#EAE42F"/>
+  
+</symbol>
+<symbol id="pat-ink" viewBox="0 0 200 220">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#0C1D28"/>
+  
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF"/>
+  
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#0C1D28" stroke="#FFFFFF" stroke-width="5"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#0C1D28" stroke="#FFFFFF" stroke-width="5"/>
+  
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#0C1D28"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#0C1D28"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#0C1D28"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#0C1D28"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#0C1D28"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#FFFFFF"/>
+  <circle cx="127" cy="90" r="26" fill="#FFFFFF"/>
+  <circle cx="73" cy="90" r="16" fill="#0C1D28"/>
+  <circle cx="127" cy="90" r="16" fill="#0C1D28"/>
+  <circle cx="73" cy="90" r="7.5" fill="#0C1D28"/>
+  <circle cx="127" cy="90" r="7.5" fill="#0C1D28"/>
+  
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#0C1D28" stroke="#FFFFFF" stroke-width="4"/>
+  
+</symbol>
+<symbol id="pat-rev" viewBox="0 0 200 220">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#FFFFFF"/>
+  
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#07202E"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#07202E"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#07202E"/>
+  
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#FFFFFF" stroke="#07202E" stroke-width="5"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#FFFFFF" stroke="#07202E" stroke-width="5"/>
+  
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#FFFFFF"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#FFFFFF"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#FFFFFF"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#FFFFFF"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#FFFFFF"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#07202E"/>
+  <circle cx="127" cy="90" r="26" fill="#07202E"/>
+  <circle cx="73" cy="90" r="16" fill="#FFFFFF"/>
+  <circle cx="127" cy="90" r="16" fill="#FFFFFF"/>
+  <circle cx="73" cy="90" r="7.5" fill="#FFFFFF"/>
+  <circle cx="127" cy="90" r="7.5" fill="#FFFFFF"/>
+  
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#FFFFFF" stroke="#07202E" stroke-width="4"/>
+  
+</symbol>
+<symbol id="pat-gold" viewBox="0 0 200 220">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#0C1D28"/>
+  
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#EAE42F"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#EAE42F"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#EAE42F"/>
+  
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#0C1D28" stroke="#EAE42F" stroke-width="5"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#0C1D28" stroke="#EAE42F" stroke-width="5"/>
+  
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#0C1D28"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#0C1D28"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#0C1D28"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#0C1D28"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#0C1D28"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#EAE42F"/>
+  <circle cx="127" cy="90" r="26" fill="#EAE42F"/>
+  <circle cx="73" cy="90" r="16" fill="#0C1D28"/>
+  <circle cx="127" cy="90" r="16" fill="#0C1D28"/>
+  <circle cx="73" cy="90" r="7.5" fill="#0C1D28"/>
+  <circle cx="127" cy="90" r="7.5" fill="#0C1D28"/>
+  
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#0C1D28" stroke="#EAE42F" stroke-width="4"/>
+  
+</symbol>
+<symbol id="pat-av" viewBox="22 4 156 172">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#1D3D51"/>
+  <path d="M46 170 C32 184 21 200 16 220 L10 220 C10 209 12 198 16 186 C22 168 33 152 47 141 Z" fill="#163344"/>
+  <path d="M154 170 C168 184 179 200 184 220 L190 220 C190 209 188 198 184 186 C178 168 167 152 153 141 Z" fill="#163344"/>
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#E3ECF3" opacity=".3"/>
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#CFC922"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#EAE42F"/>
+  <path d="M84 178 L116 178 L100 188 Z" fill="#B4AE18" opacity=".5"/>
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#16303F"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#16303F"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#1D3D51"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#2C5169"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#24455B"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="127" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="73" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="127" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="73" cy="90" r="7.5" fill="#06202D"/>
+  <circle cx="127" cy="90" r="7.5" fill="#06202D"/>
+  <circle cx="67" cy="83" r="3.4" fill="#FFFFFF" opacity=".92"/>
+  <circle cx="121" cy="83" r="3.4" fill="#FFFFFF" opacity=".92"/>
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#EAE42F"/>
+  <path d="M100 121 L110 121 L100 131 Z" fill="#B4AE18" opacity=".45"/>
+</symbol>
+<symbol id="pat-avf" viewBox="22 4 156 172">
+  <!-- torso -->
+  <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#1D3D51"/>
+  
+  <!-- shirt behind the collar -->
+  <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF"/>
+  <!-- collar flaps -->
+  <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF"/>
+  <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF"/>
+  
+  <!-- tie -->
+  <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#CFC922"/>
+  <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#EAE42F"/>
+  
+  <!-- ear tufts -->
+  <path d="M52 46 L46 10 L88 34 Z" fill="#16303F"/>
+  <path d="M148 46 L154 10 L112 34 Z" fill="#16303F"/>
+  <!-- head -->
+  <ellipse cx="100" cy="88" rx="69" ry="67" fill="#1D3D51"/>
+  <!-- facial disc -->
+  <ellipse cx="100" cy="90" rx="59" ry="55" fill="#2C5169"/>
+  <!-- brow -->
+  <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#24455B"/>
+  <!-- eyes -->
+  <circle cx="73" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="127" cy="90" r="26" fill="#F2F8FC"/>
+  <circle cx="73" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="127" cy="90" r="16" fill="#019FFF"/>
+  <circle cx="73" cy="90" r="7.5" fill="#06202D"/>
+  <circle cx="127" cy="90" r="7.5" fill="#06202D"/>
+  
+  <!-- beak -->
+  <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#EAE42F"/>
+  
+</symbol>
+</svg>
+
+<header class="hero"><div class="shell in">
+  <div>
+    <div class="plate" id="heroPlate" style="background:#0B2C3E">
+      <svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg>
+      <div class="grounds" role="group" aria-label="Test ground">
+        <button data-bg="#0B2C3E" style="background:#0B2C3E" aria-pressed="true" aria-label="Night"></button>
+        <button data-bg="#FFFFFF" style="background:#FFFFFF" aria-pressed="false" aria-label="White"></button>
+        <button data-bg="#F4F7F9" style="background:#F4F7F9" aria-pressed="false" aria-label="Paper"></button>
+        <button data-bg="#0A6BA8" style="background:#0A6BA8" aria-pressed="false" aria-label="Page blue"></button>
+        <button data-bg="#EAE42F" style="background:#EAE42F" aria-pressed="false" aria-label="Gold"></button>
+        <span class="cap" id="groundName">Night</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <span class="eyebrow on-night">Character mark &middot; Pivot Aide Tax</span>
+    <h1>Uncle&nbsp;Pat now wears a <em>white collar and a gold tie</em>.</h1>
+    <p class="lede">Same owl, dressed for the job. The mark moves from a plain bird to a
+    head-and-shoulders portrait: a white shirt collar, a knotted tie in the brand gold, and the
+    blue eyes that were always the recognisable part. He looks like someone you would hand your
+    documents to.</p>
+    <dl>
+      <div><dt>Construction</dt><dd>Vector, flat fills, no gradients</dd></div>
+      <div><dt>Reads down to</dt><dd>24&nbsp;px as a favicon</dd></div>
+      <div><dt>Reproduces in</dt><dd>Full colour, one colour, reversed</dd></div>
+    </dl>
+  </div>
+</div></header>
+
+<main>
+
+<!-- ============ WHAT CHANGED ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">The change</span>
+    <h2>From a bird to a person.</h2>
+    <p>The old mark was an owl shape. This one is a portrait, and the difference is the clothing:
+    a collar gives him shoulders, and shoulders give him a job. The tie is the brand gold already
+    used for the beak, so the accent runs on a single vertical axis &mdash; beak, knot, blade.</p>
+  </div>
+  <div class="plates">
+    <div class="plate"><div class="art g-white"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div>
+      <div class="cap"><b>Primary</b><span>on white</span></div></div>
+    <div class="plate"><div class="art g-paper"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div>
+      <div class="cap"><b>Primary</b><span>on paper</span></div></div>
+    <div class="plate"><div class="art g-night"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div>
+      <div class="cap"><b>Primary</b><span>on night</span></div></div>
+    <div class="plate"><div class="art g-blue"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div>
+      <div class="cap"><b>Primary</b><span>on page blue</span></div></div>
+    <div class="plate"><div class="art g-white"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat-ink"></use></svg></div>
+      <div class="cap"><b>One colour</b><span>ink on white</span></div></div>
+    <div class="plate"><div class="art g-night"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat-rev"></use></svg></div>
+      <div class="cap"><b>Reversed</b><span>white on night</span></div></div>
+    <div class="plate"><div class="art g-gold"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat-gold"></use></svg></div>
+      <div class="cap"><b>One colour</b><span>ink on gold</span></div></div>
+    <div class="plate"><div class="art g-brand"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat-rev"></use></svg></div>
+      <div class="cap"><b>Reversed</b><span>on brand blue</span></div></div>
+  </div>
+</div></section>
+
+<!-- ============ ANATOMY ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">Construction</span>
+    <h2>Six parts, and what each is doing.</h2>
+    <p>Nothing here is decoration. Every element carries either recognition or meaning, which is
+    what lets the mark survive being shrunk to a favicon.</p>
+  </div>
+  <div class="anat">
+    <div class="fig"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div>
+    <dl class="parts">
+      <div class="part"><dt>Tufts</dt><dd><b>Short and blunt.</b> Long tufts read as a devil or a
+      cat at small sizes. These sit just proud of the head and stop.</dd></div>
+      <div class="part"><dt>Eyes</dt><dd><b>The recognisable part.</b> Brand blue at
+      <span style="font-family:var(--f-mono)">#019FFF</span>, wide and forward. They are the first
+      thing that survives when everything else goes.</dd></div>
+      <div class="part"><dt>Beak</dt><dd><b>Gold, on the centre line.</b> A small diamond, not a
+      hook &mdash; he reads as attentive rather than predatory.</dd></div>
+      <div class="part"><dt>Collar</dt><dd><b>White, symmetrical, two flaps.</b> The flaps tuck
+      behind the head so the join is never visible. This is what turns the shape into a portrait.</dd></div>
+      <div class="part"><dt>Tie</dt><dd><b>Brand gold, knotted.</b> The knot emerges from under the
+      chin; the blade tapers to a point above the lower edge, never touching it.</dd></div>
+      <div class="part"><dt>Shoulders</dt><dd><b>Cropped by the frame.</b> The torso runs off the
+      bottom of the artboard, which is what makes it a portrait rather than a full figure.</dd></div>
+    </dl>
+  </div>
+</div></section>
+
+<!-- ============ SIZES ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">Reproduction</span>
+    <h2>He has to work at both ends.</h2>
+    <p>At 64&nbsp;px and below, use the flat variant &mdash; it drops the soft shading, the eye
+    highlights and the tie fold, which turn to mud at small sizes. Below 24&nbsp;px, use the
+    avatar crop rather than the full portrait.</p>
+  </div>
+  <div class="sizes">
+    <figure><div style="width:150px"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div><figcaption><b>150&nbsp;px</b>full</figcaption></figure>
+    <figure><div style="width:92px"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat"></use></svg></div><figcaption><b>92&nbsp;px</b>full</figcaption></figure>
+    <figure><div style="width:64px"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat-flat"></use></svg></div><figcaption><b>64&nbsp;px</b>flat</figcaption></figure>
+    <figure><div style="width:40px"><svg class="owl " viewBox="0 0 200 220" role="img" aria-label="Uncle Pat"><use href="#pat-flat"></use></svg></div><figcaption><b>40&nbsp;px</b>flat</figcaption></figure>
+    <figure><div style="width:40px"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-avf"></use></svg></div><figcaption><b>40&nbsp;px</b>avatar crop</figcaption></figure>
+    <figure><div style="width:24px"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-avf"></use></svg></div><figcaption><b>24&nbsp;px</b>favicon</figcaption></figure>
+    <figure><div style="width:110px;border-radius:50%;overflow:hidden;background:#0B2C3E"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-av"></use></svg></div>
+      <figcaption><b>Avatar</b>circular crop</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- ============ LOCKUPS ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">Lockups</span>
+    <h2>With the name beside him, and above him.</h2>
+    <p>Clear space around the lockup is one head-width on every side. The mark never appears
+    inside a box, a badge or a circle except as an app icon or an avatar, where the crop is the
+    frame.</p>
+  </div>
+  <div class="locks">
+    <div class="lock">
+      <div class="lockup"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-av"></use></svg><span class="wm">Pivot Aide <span>Tax</span></span></div>
+      <div class="lockup stack"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-av"></use></svg><span class="wm">Pivot Aide <span>Tax</span></span></div>
+      <div class="cap">Horizontal and stacked &middot; on light</div>
+    </div>
+    <div class="lock night">
+      <div class="lockup"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-av"></use></svg><span class="wm">Pivot Aide <span>Tax</span></span></div>
+      <div class="lockup stack"><svg class="owl " viewBox="22 4 156 172" role="img" aria-label="Uncle Pat"><use href="#pat-av"></use></svg><span class="wm">Pivot Aide <span>Tax</span></span></div>
+      <div class="cap">Horizontal and stacked &middot; on night</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ COLOUR ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">Colour</span>
+    <h2>Six values, and nothing outside them.</h2>
+    <p>The mark uses the Pivot Aide Tax palette without additions. If a reproduction cannot hold
+    these, it goes one colour rather than approximate.</p>
+  </div>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#019FFF"></div><div class="meta">
+      <div class="n">Brand blue</div><div class="hex">#019FFF</div>
+      <div class="use">The eyes. The only saturated colour on the mark.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#EAE42F"></div><div class="meta">
+      <div class="n">Gold</div><div class="hex">#EAE42F</div>
+      <div class="use">Beak and tie. The accent, on one vertical axis.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#2C5169"></div><div class="meta">
+      <div class="n">Facial disc</div><div class="hex">#2C5169</div>
+      <div class="use">The lighter plane of the face, behind the eyes.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1D3D51"></div><div class="meta">
+      <div class="n">Plumage</div><div class="hex">#1D3D51</div>
+      <div class="use">Head and shoulders. The body of the mark.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#16303F"></div><div class="meta">
+      <div class="n">Tuft</div><div class="hex">#16303F</div>
+      <div class="use">Ear tufts and shading. Never used alone.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF;box-shadow:inset 0 0 0 1px var(--line)"></div><div class="meta">
+      <div class="n">Collar</div><div class="hex">#FFFFFF</div>
+      <div class="use">Pure white, both flaps. Never tinted.</div></div></div>
+  </div>
+</div></section>
+
+<!-- ============ RULES ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">Handling</span>
+    <h2>Four things to hold, four to avoid.</h2>
+  </div>
+  <div class="rules">
+    <div class="rule do"><span class="k">Do</span><h3>Give him room</h3>
+      <p>One head-width of clear space on every side. He is a portrait, and portraits need a
+      margin to read as one.</p></div>
+    <div class="rule dont"><span class="k">Don't</span><h3>Recolour the tie</h3>
+      <p>The gold is the accent and it is fixed. A blue tie loses the only warm note on the mark;
+      a red one leaves the palette entirely.</p></div>
+    <div class="rule do"><span class="k">Do</span><h3>Drop to flat below 64&nbsp;px</h3>
+      <p>The shading and highlights are there for the hero. Small sizes get the flat variant, which
+      is the same geometry with the soft passes removed.</p></div>
+    <div class="rule dont"><span class="k">Don't</span><h3>Outline him</h3>
+      <p>No keyline, no drop shadow, no stroke around the silhouette. If he will not hold on a
+      ground, change the ground or use the one-colour variant.</p></div>
+    <div class="rule do"><span class="k">Do</span><h3>Use the avatar crop for icons</h3>
+      <p>App icon, favicon, profile picture, email signature. The crop keeps the head, the collar
+      and the top of the knot &mdash; enough to identify him in a tab.</p></div>
+    <div class="rule dont"><span class="k">Don't</span><h3>Stretch or rotate</h3>
+      <p>Scale proportionally and keep him upright. He is a professional, not a mascot on a
+      skateboard.</p></div>
+    <div class="rule do"><span class="k">Do</span><h3>Let him carry a line</h3>
+      <p>Beside a quotation, in a message thread, next to a section heading. He works hardest as a
+      speaker, not as wallpaper.</p></div>
+    <div class="rule dont"><span class="k">Don't</span><h3>Put him on every screen</h3>
+      <p>A character that appears everywhere stops meaning anything. He earns a place where a
+      person would speak.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ FILES ============ -->
+<section><div class="shell">
+  <div class="sechead">
+    <span class="eyebrow">Artwork</span>
+    <h2>What was delivered with this sheet.</h2>
+    <p>All vector, all from one source geometry, so a change to the drawing regenerates every
+    file rather than being redrawn seven times.</p>
+  </div>
+  <div class="tablewrap"><table class="files">
+    <tr><th>File</th><th>What it is</th><th>Use it for</th></tr>
+    <tr><td>uncle-pat-colour.svg</td><td>Full portrait, all shading</td><td>Web hero, print, anything above 92&nbsp;px</td></tr>
+    <tr><td>uncle-pat-colour-flat.svg</td><td>Same geometry, soft passes removed</td><td>64&nbsp;px and below</td></tr>
+    <tr><td>uncle-pat-avatar.svg</td><td>Head, collar and knot, cropped square</td><td>App icon, profile picture, email signature</td></tr>
+    <tr><td>uncle-pat-favicon.svg</td><td>Avatar crop, flat</td><td>Browser tab, 16&ndash;32&nbsp;px</td></tr>
+    <tr><td>uncle-pat-mono-ink.svg</td><td>One colour, ink on light</td><td>Fax, stamp, single-colour print, engraving</td></tr>
+    <tr><td>uncle-pat-mono-reversed.svg</td><td>One colour, white on dark</td><td>Dark grounds, merchandise, foil</td></tr>
+    <tr><td>uncle-pat-mono-on-gold.svg</td><td>One colour, ink on gold</td><td>The gold band on the site and the file covers</td></tr>
+    <tr><td>PNG exports</td><td>1024, 512, 256, avatar 512, favicon 64 and 32</td><td>Anywhere SVG is not accepted</td></tr>
+  </table></div>
+</div></section>
+
+</main>
+
+<footer><div class="shell">
+  Uncle Pat, character mark for Pivot Aide Tax. Drawn as vector geometry from a single source, so
+  the site, the client app, the print files and the icons all render the same owl. Placeholder art
+  is now retired &mdash; this is the mark.
+</div></footer>
+
+<script>
+(function(){
+  var plate = document.getElementById('heroPlate');
+  var name  = document.getElementById('groundName');
+  var names = { '#0B2C3E':'Night', '#FFFFFF':'White', '#F4F7F9':'Paper',
+                '#0A6BA8':'Page blue', '#EAE42F':'Gold' };
+  document.querySelectorAll('.grounds button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var bg = b.dataset.bg;
+      plate.style.background = bg;
+      name.textContent = names[bg] || '';
+      document.querySelectorAll('.grounds button').forEach(function(o){
+        o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+      });
+    });
+  });
+})();
+</script>
+
+</body></html>

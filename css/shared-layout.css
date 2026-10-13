@@ -1,0 +1,522 @@
+/* ============================================================
+   THE FILE ROOM — SHARED LAYOUT & DESIGN SYSTEM EXTENSIONS
+   Pivot Aide Tax: Client Portal & Firm Operations Console
+   ============================================================ */
+
+/* ── 1. Page Header & Breadcrumbs ───────────────────────────── */
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.page-title-wrap h1 {
+  font-family: var(--f-display);
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.15;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.page-subtitle {
+  color: var(--ink-2);
+  font-size: 0.88rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.page-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Breadcrumb Bar */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+  font-family: var(--f-body);
+}
+
+.crumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.crumb-item:hover {
+  color: var(--brand);
+}
+
+.crumb-separator {
+  color: var(--line);
+  user-select: none;
+  font-size: 0.72rem;
+}
+
+.crumb-current {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ── 2. User Menu Dropdown (Appbar Header) ──────────────────── */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 260px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+  animation: userMenuFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.user-menu-dropdown.show {
+  display: block;
+}
+
+@keyframes userMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-menu-header {
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.user-menu-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.user-menu-email {
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu-role-tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-family: var(--f-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.user-menu-role-tag.client {
+  background: rgba(1, 159, 255, 0.14);
+  color: var(--brand);
+}
+
+.user-menu-role-tag.firm {
+  background: rgba(234, 228, 47, 0.2);
+  color: var(--gold-dp);
+}
+
+.user-menu-body {
+  padding: 6px 0;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  color: var(--ink);
+  font-size: 0.82rem;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.user-menu-item:hover {
+  background: var(--surface-2);
+  color: var(--brand);
+}
+
+.user-menu-item .menu-ic {
+  font-size: 0.95rem;
+  width: 18px;
+  text-align: center;
+  color: var(--ink-2);
+}
+
+.user-menu-item:hover .menu-ic {
+  color: var(--brand);
+}
+
+.user-menu-divider {
+  height: 1px;
+  background: var(--line-2);
+  margin: 4px 0;
+}
+
+.user-menu-signout {
+  color: var(--danger) !important;
+}
+
+.user-menu-signout:hover {
+  background: var(--danger-bg) !important;
+}
+
+/* ── 3. Loading, Skeleton & Progress States ─────────────────── */
+.loading-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  margin: 16px 0;
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--line-2);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 14px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+/* Skeleton Loading Elements */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.skeleton-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+/* ── 4. Empty State Component ───────────────────────────────── */
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 42px 24px;
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  margin: 16px 0;
+}
+
+.empty-state-icon {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  opacity: 0.85;
+}
+
+.empty-state-title {
+  font-family: var(--f-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 8px 0;
+}
+
+.empty-state-desc {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  max-width: 440px;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.empty-state-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── 5. Error State Component ───────────────────────────────── */
+.error-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 36px 24px;
+  background: var(--danger-bg);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  border-radius: var(--radius-md);
+  margin: 16px 0;
+}
+
+.error-state-icon {
+  font-size: 2.2rem;
+  color: var(--danger);
+  margin-bottom: 10px;
+}
+
+.error-state-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #991B1B;
+  margin: 0 0 6px 0;
+}
+
+.error-state-desc {
+  font-size: 0.84rem;
+  color: #7F1D1D;
+  max-width: 480px;
+  margin: 0 0 16px 0;
+  line-height: 1.45;
+}
+
+/* ── 6. Interactive States Demo Bar ─────────────────────────── */
+.states-demo-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 0.78rem;
+  flex-wrap: wrap;
+}
+
+.states-demo-label {
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-right: 6px;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+}
+
+.states-demo-btn {
+  padding: 4px 10px;
+  font-size: 0.74rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.states-demo-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.states-demo-btn.active {
+  background: var(--night);
+  color: #fff;
+  border-color: var(--night);
+}
+
+/* ── 7. Sidebar Navigation Active Enhancements ──────────────── */
+.side a.on {
+  color: #ffffff !important;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-left: 3px solid var(--gold) !important;
+}
+
+.side a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Tab bar responsive fix */
+@media (min-width: 900px) {
+  .tabbar {
+    display: none !important;
+  }
+}
+
+/* ── 8. Document Vault & Checklist UI Styles ─────────────────── */
+.doc-dropzone {
+  background: var(--surface);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius-md);
+  padding: 32px 20px;
+  text-align: center;
+  transition: all var(--transition);
+  margin-bottom: 24px;
+  cursor: pointer;
+  position: relative;
+}
+
+.doc-dropzone:hover,
+.doc-dropzone.drag-over {
+  border-color: var(--brand);
+  background: rgba(1, 159, 255, 0.04);
+  box-shadow: 0 0 0 4px rgba(1, 159, 255, 0.1);
+}
+
+.doc-dropzone-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+  display: inline-block;
+  color: var(--brand);
+}
+
+.doc-filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.doc-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.doc-filter-btn:hover {
+  border-color: var(--brand);
+  color: var(--ink);
+}
+
+.doc-filter-btn.active {
+  background: var(--night);
+  color: #ffffff;
+  border-color: var(--night);
+}
+
+.doc-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-family: var(--f-mono);
+  font-weight: 600;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.doc-filter-btn.active .doc-filter-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.doc-item-row {
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.doc-item-row:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(1, 159, 255, 0.4) !important;
+}
+
+/* ── Firebase Status Badge States ── */
+.firebase-badge {
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.firebase-badge:hover {
+  filter: brightness(1.15);
+}
+
+.firebase-badge.offline {
+  background: rgba(231, 76, 60, 0.14) !important;
+  border-color: rgba(231, 76, 60, 0.35) !important;
+  color: #e74c3c !important;
+}
+
+.firebase-badge.offline .fb-dot {
+  background: #e74c3c !important;
+  box-shadow: 0 0 6px #e74c3c !important;
+}
+
+/* ── Shared Modal Backdrop & Container Overrides ── */
+.modal-backdrop.active,
+.modal-backdrop.open {
+  display: flex !important;
+}
+
+.modal-backdrop[style*="display: none"] {
+  display: none !important;
+}
+

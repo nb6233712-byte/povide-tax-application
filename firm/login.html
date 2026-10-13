@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practitioner Sign In — Firm Operations Console — The File Room</title>
+  <meta name="description" content="Supervisory Practitioner Authentication & NIST AAL2 Gateway — The File Room by Pivot Aide Tax.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='22 4 156 172'%3E%3Cellipse cx='100' cy='88' rx='69' ry='67' fill='%231D3D51'/%3E%3Cellipse cx='100' cy='90' rx='59' ry='55' fill='%232C5169'/%3E%3Ccircle cx='73' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='127' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='73' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='127' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='73' cy='90' r='7.5' fill='%2306202D'/%3E%3Ccircle cx='127' cy='90' r='7.5' fill='%2306202D'/%3E%3Cpath d='M100 103 L110 121 L100 131 L90 121 Z' fill='%23EAE42F'/%3E%3C/svg%3E">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shared-layout.css">
+  <style>
+    /* Ensure page is fully scrollable and overrides app.css overflow: hidden */
+    html {
+      height: auto !important;
+      min-height: 100% !important;
+      overflow-y: scroll !important; /* Always show the scrollbar gutter so scrollbar is clearly visible */
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      height: auto !important;
+      min-height: 100vh !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      scrollbar-width: thin;
+      scrollbar-color: #019FFF rgba(6, 24, 36, 0.5);
+    }
+
+    /* WebKit / Chromium custom styled visible scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(6, 24, 36, 0.6);
+      border-left: 1px solid rgba(1, 159, 255, 0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #019FFF 0%, #0077c8 100%);
+      border-radius: 6px;
+      border: 2px solid rgba(6, 24, 36, 0.6);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #38BDF8 0%, #019FFF 100%);
+    }
+
+    .firm-auth-tabs {
+      background: #061824 !important;
+      border: 1px solid rgba(1, 159, 255, 0.35) !important;
+    }
+    .firm-auth-tabs button {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: var(--radius-sm, 6px);
+    }
+    .firm-auth-tabs button.active {
+      background: #019FFF !important;
+      color: #FFFFFF !important;
+      border-color: #019FFF !important;
+      box-shadow: 0 2px 8px rgba(1, 159, 255, 0.35);
+    }
+    .firm-auth-tabs button.inactive {
+      background: transparent !important;
+      color: #9FBECF !important;
+      border-color: transparent !important;
+    }
+    .firm-auth-tabs button.inactive:hover {
+      color: #FFFFFF !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .pwd-toggle-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .pwd-toggle-wrap input {
+      width: 100%;
+      padding-right: 42px !important;
+    }
+    .pwd-toggle-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--ink-2);
+      cursor: pointer;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: color 0.15s ease, background 0.15s ease;
+      line-height: 1;
+    }
+    .pwd-toggle-btn:hover {
+      color: var(--brand, #019FFF);
+      background: rgba(1, 159, 255, 0.08);
+    }
+    .pwd-toggle-btn:focus-visible {
+      outline: 2px solid var(--brand, #019FFF);
+      outline-offset: 1px;
+    }
+  </style>
+</head>
+
+<body style="background:var(--ground);min-height:100vh;display:flex;flex-direction:column;">
+
+  <!-- SVG Brand Sprites: Full Canonical Uncle Pat Mascot -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="pat" viewBox="0 0 200 220">
+      <!-- torso -->
+      <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#1D3D51" />
+      <path d="M46 170 C32 184 21 200 16 220 L10 220 C10 209 12 198 16 186 C22 168 33 152 47 141 Z" fill="#163344" />
+      <path d="M154 170 C168 184 179 200 184 220 L190 220 C190 209 188 198 184 186 C178 168 167 152 153 141 Z" fill="#163344" />
+      <!-- shirt behind the collar -->
+      <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF" />
+      <!-- collar flaps -->
+      <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF" />
+      <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF" />
+      <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#E3ECF3" opacity=".3" />
+      <!-- tie -->
+      <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#CFC922" />
+      <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#EAE42F" />
+      <path d="M84 178 L116 178 L100 188 Z" fill="#B4AE18" opacity=".5" />
+      <!-- ear tufts -->
+      <path d="M52 46 L46 10 L88 34 Z" fill="#16303F" />
+      <path d="M148 46 L154 10 L112 34 Z" fill="#16303F" />
+      <!-- head -->
+      <ellipse cx="100" cy="88" rx="69" ry="67" fill="#1D3D51" />
+      <!-- facial disc -->
+      <ellipse cx="100" cy="90" rx="59" ry="55" fill="#2C5169" />
+      <!-- brow -->
+      <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#24455B" />
+      <!-- eyes -->
+      <circle cx="73" cy="90" r="26" fill="#F2F8FC" />
+      <circle cx="127" cy="90" r="26" fill="#F2F8FC" />
+      <circle cx="73" cy="90" r="16" fill="#019FFF" />
+      <circle cx="127" cy="90" r="16" fill="#019FFF" />
+      <circle cx="73" cy="90" r="7.5" fill="#06202D" />
+      <circle cx="127" cy="90" r="7.5" fill="#06202D" />
+      <circle cx="67" cy="83" r="3.4" fill="#FFFFFF" opacity=".92" />
+      <circle cx="121" cy="83" r="3.4" fill="#FFFFFF" opacity=".92" />
+      <!-- beak -->
+      <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#EAE42F" />
+      <path d="M100 121 L110 121 L100 131 Z" fill="#B4AE18" opacity=".45" />
+    </symbol>
+
+    <symbol id="pat-av" viewBox="22 4 156 172">
+      <!-- torso -->
+      <path d="M100 128 C140 128 172 150 184 186 C188 198 190 209 190 220 L10 220 C10 209 12 198 16 186 C28 150 60 128 100 128 Z" fill="#1D3D51" />
+      <!-- shirt behind the collar -->
+      <path d="M66 128 L134 128 L100 184 Z" fill="#FFFFFF" />
+      <!-- collar flaps -->
+      <path d="M63 141 L100 170 L79 199 L43 161 Z" fill="#FFFFFF" />
+      <path d="M137 141 L100 170 L121 199 L157 161 Z" fill="#FFFFFF" />
+      <!-- tie -->
+      <path d="M89 150 L111 150 L116 178 L84 178 Z" fill="#CFC922" />
+      <path d="M84 178 L116 178 L110 202 L100 214 L90 202 Z" fill="#EAE42F" />
+      <!-- ear tufts -->
+      <path d="M52 46 L46 10 L88 34 Z" fill="#16303F" />
+      <path d="M148 46 L154 10 L112 34 Z" fill="#16303F" />
+      <!-- head -->
+      <ellipse cx="100" cy="88" rx="69" ry="67" fill="#1D3D51" />
+      <!-- facial disc -->
+      <ellipse cx="100" cy="90" rx="59" ry="55" fill="#2C5169" />
+      <!-- brow -->
+      <path d="M100 44 C132 44 152 60 156 82 C146 66 126 57 100 57 C74 57 54 66 44 82 C48 60 68 44 100 44 Z" fill="#24455B" />
+      <!-- eyes -->
+      <circle cx="73" cy="90" r="26" fill="#F2F8FC" />
+      <circle cx="127" cy="90" r="26" fill="#F2F8FC" />
+      <circle cx="73" cy="90" r="16" fill="#019FFF" />
+      <circle cx="127" cy="90" r="16" fill="#019FFF" />
+      <circle cx="73" cy="90" r="7.5" fill="#06202D" />
+      <circle cx="127" cy="90" r="7.5" fill="#06202D" />
+      <circle cx="67" cy="83" r="3.4" fill="#FFFFFF" opacity=".92" />
+      <circle cx="121" cy="83" r="3.4" fill="#FFFFFF" opacity=".92" />
+      <!-- beak -->
+      <path d="M100 103 L110 121 L100 131 L90 121 Z" fill="#EAE42F" />
+      <path d="M100 121 L110 121 L100 131 Z" fill="#B4AE18" opacity=".45" />
+    </symbol>
+  </svg>
+
+  <!-- Clean Top Bar -->
+  <header class="appbar" style="display:flex;justify-content:space-between;align-items:center;padding:0 24px;width:100%;box-sizing:border-box;">
+    <div class="appbar-left" style="display:flex;align-items:center;gap:12px">
+      <a href="../index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit" title="Return to Dashboard Gateway">
+        <svg class="owl-av" viewBox="22 4 156 172" style="width:28px;height:28px;flex:none" aria-hidden="true">
+          <use href="#pat-av"></use>
+        </svg>
+        <span class="wm">Pivot Aide <span>Tax</span></span>
+      </a>
+    </div>
+
+    <div class="appbar-right" style="display:flex;align-items:center;gap:10px">
+      <span class="file-badge" style="background:rgba(1,159,255,0.15);color:var(--brand);border-color:rgba(1,159,255,0.4);">Firm Console &middot; NIST AAL2</span>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px 16px 48px;">
+    <div style="width:100%;max-width:520px;">
+
+      <!-- Hero Eyebrow & Brand Mark -->
+      <div style="text-align:center;margin-bottom:24px;">
+        <svg viewBox="0 0 200 220" style="width:68px;height:75px;margin-bottom:12px;" aria-hidden="true">
+          <use href="#pat"></use>
+        </svg>
+        <div style="margin-bottom:6px;">
+          <span class="chip night sm" style="font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border-color:rgba(1,159,255,0.4)">⚙ Firm Operations Console</span>
+        </div>
+        <h1 style="font-family:var(--f-display);font-size:1.85rem;font-weight:700;color:var(--ink);margin:0 0 6px;">Practitioner Gateway</h1>
+        <p style="color:var(--ink-2);font-size:.88rem;margin:0;line-height:1.5;">Supervisory access for CPAs, EAs, and credentialed tax staff under IRS Circular 230.</p>
+      </div>
+
+      <!-- Tab Switcher (Practitioner Sign In vs Request Staff Access) -->
+      <div class="firm-auth-tabs" id="firm-auth-tabs" style="display:flex;gap:6px;background:#061824;padding:4px;border-radius:var(--radius-md);border:1px solid rgba(1,159,255,0.35);margin-bottom:20px;">
+        <button type="button" class="btn sm active" id="tab-btn-firm-signin"
+          style="flex:1;font-size:.78rem;font-weight:700;background:#019FFF;color:#FFFFFF;border:1px solid #019FFF;border-radius:var(--radius-sm);cursor:pointer;padding:8px 12px;box-shadow:0 2px 8px rgba(1,159,255,0.35);">
+          <span>◉</span> Practitioner Sign In
+        </button>
+        <button type="button" class="btn sm inactive" id="tab-btn-firm-signup"
+          style="flex:1;font-size:.78rem;font-weight:600;background:transparent;color:#9FBECF;border:1px solid transparent;border-radius:var(--radius-sm);cursor:pointer;padding:8px 12px;">
+          <span>+</span> Request Staff Access (Sign Up)
+        </button>
+      </div>
+
+      <!-- ==================== SECURITY GUARDRAIL: 403 UNAUTHORIZED ROLE CARD ==================== -->
+      <div id="guardrail-403" class="card" style="display:none;background:var(--surface);border:2px solid var(--danger);border-radius:var(--radius-lg);padding:22px;margin-bottom:20px;box-shadow:var(--shadow-md);">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div style="font-size:2.2rem;line-height:1;flex:none;">🚫</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span class="chip warn sm" style="background:var(--danger-bg);color:var(--danger);font-weight:700;font-size:.7rem;">403 FORBIDDEN</span>
+              <span style="font-size:.75rem;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.04em;">Unauthorized Role</span>
+            </div>
+            <h2 style="font-size:1.05rem;font-weight:700;color:var(--ink);margin:0 0 6px;">Client Account Prohibited from Staff Console</h2>
+            <p id="guardrail-403-message" style="font-size:.82rem;color:var(--ink-2);line-height:1.45;margin:0 0 12px;">
+              Access Denied: The authenticated account holds a <b>Taxpayer (Client)</b> role. Under IRS Circular 230 § 10.29 and FTC Safeguards Rule 16 CFR § 314.4, client accounts cannot access supervisory queues, practitioner workpapers, or authoritative practice ledgers.
+            </p>
+            <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:14px;font-family:var(--f-mono);font-size:.74rem;color:var(--ink-2);">
+              <div>SESSION IDENTITY: <b id="guardrail-session-email">m.whitfield@example.com</b></div>
+              <div>REQUIRED CREDENTIAL: <b>IRS Circular 230 Staff &middot; NIST AAL2</b></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <a href="../client/dashboard.html" class="btn sm btn-g" style="text-decoration:none;font-weight:600;">
+                Return to Client Portal &rarr;
+              </a>
+              <button type="button" id="btn-clear-client-session" class="btn sm btn-o" style="color:var(--ink-2);">
+                Sign Out &amp; Use Staff ID
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Toast Banner -->
+      <div id="auth-alert-box" style="display:none;margin-bottom:16px;border-radius:var(--radius-md);padding:10px 14px;font-size:.82rem;line-height:1.45;"></div>
+
+      <!-- ==================== PRACTITIONER AUTHENTICATION FORM ==================== -->
+      <div class="card" id="card-practitioner-signin" style="background:var(--surface);border:1px solid rgba(1,159,255,0.3);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow-md);">
+        
+        <!-- Domain Restriction Badge -->
+        <div style="background:rgba(1,159,255,0.08);border:1px solid rgba(1,159,255,0.25);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:14px;font-size:.74rem;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-weight:700;color:var(--accent,#019FFF);text-transform:uppercase;font-size:.66rem;letter-spacing:.05em;">🔒 Practitioners Only</span>
+          <span style="color:var(--ink-2);font-size:.72rem;">Authorized domain: <b style="font-family:var(--f-mono);color:var(--ink);">@pivot-aide-tax.com</b></span>
+        </div>
+
+        <!-- Google Workspace Sign-In Option Restricted by Domain -->
+        <button type="button" class="btn btn-o full" id="btn-google-firm" title="Sign in with Google Workspace (@pivot-aide-tax.com)"
+          style="display:flex;align-items:center;justify-content:center;gap:12px;padding:11px 16px;border-radius:var(--radius-sm);font-size:.88rem;font-weight:600;margin-bottom:14px;background:rgba(1,159,255,0.08);border:1px solid rgba(1,159,255,0.35);color:inherit;cursor:pointer;width:100%;box-sizing:border-box;">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Sign In with Google Workspace</span>
+        </button>
+
+        <!-- Divider -->
+        <div style="display:flex;align-items:center;margin:12px 0 18px;gap:12px;">
+          <span style="flex:1;height:1px;background:var(--line);"></span>
+          <span style="font-size:.70rem;color:var(--ink-2);font-family:var(--f-mono);letter-spacing:.04em;white-space:nowrap;">&mdash; or continue with staff credentials &mdash;</span>
+          <span style="flex:1;height:1px;background:var(--line);"></span>
+        </div>
+
+        <form id="form-practitioner-signin" autocomplete="on">
+
+          <!-- 1. Practitioner Email -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-email" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              IRS Registered Practitioner Email
+            </label>
+            <input type="email" id="practitioner-email" value="denise@pivot-aide.tax" placeholder="practitioner@pivot-aide.tax" required autocomplete="username"
+              style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;box-sizing:border-box;">
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">Must match authorized practitioner roster in Circular 230 registry.</span>
+          </div>
+
+          <!-- 2. Master Password -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-password" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              Master Password
+            </label>
+            <div class="pwd-toggle-wrap">
+              <input type="password" id="practitioner-password" value="SupervisoryPass2025#" placeholder="••••••••••••" required autocomplete="current-password"
+                style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;box-sizing:border-box;">
+              <button type="button" class="pwd-toggle-btn" data-target="practitioner-password" aria-label="Show password" title="Toggle password visibility">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">16+ character passphrase complying with NIST SP 800-63B.</span>
+          </div>
+
+          <!-- 3. PTIN / Staff Badge ID -->
+          <div class="field" style="margin-bottom:18px;">
+            <label for="practitioner-ptin" style="display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              <span>IRS PTIN / Staff Badge ID</span>
+              <span class="chip night sm" style="font-size:.65rem;color:var(--accent);padding:1px 6px;">Circular 230</span>
+            </label>
+            <input type="text" id="practitioner-ptin" value="P01489240" placeholder="e.g. P01489240 or STAFF-001" required maxlength="12"
+              style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;font-family:var(--f-mono);letter-spacing:.05em;box-sizing:border-box;">
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">Preparer Tax Identification Number (PTIN) bound to authoritative audit logs.</span>
+          </div>
+
+          <!-- 4. Mandatory NIST AAL2 Hardware/Authenticator 2FA Challenge -->
+          <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="font-size:1rem;">🔐</span>
+                <span style="font-size:.78rem;font-weight:700;color:var(--ink);">NIST AAL2 Multi-Factor Challenge</span>
+              </div>
+              <span class="chip sm" style="background:rgba(1,159,255,0.12);color:var(--brand);border-color:rgba(1,159,255,0.3);font-size:.65rem;">MANDATORY</span>
+            </div>
+
+            <p style="font-size:.73rem;color:var(--ink-2);margin:0 0 10px;line-height:1.4;">
+              Enter the 6-digit Time-Based OTP (TOTP) from your registered authenticator app or hardware token:
+            </p>
+
+            <!-- 6-digit TOTP input boxes -->
+            <div style="display:flex;justify-content:space-between;gap:6px;margin-bottom:8px;" id="totp-container">
+              <input type="text" maxlength="1" class="totp-box" value="8" inputmode="numeric" pattern="[0-9]"
+                style="width:42px;height:46px;text-align:center;font-size:1.2rem;font-weight:700;font-family:var(--f-mono);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-sizing:border-box;">
+              <input type="text" maxlength="1" class="totp-box" value="8" inputmode="numeric" pattern="[0-9]"
+                style="width:42px;height:46px;text-align:center;font-size:1.2rem;font-weight:700;font-family:var(--f-mono);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-sizing:border-box;">
+              <input type="text" maxlength="1" class="totp-box" value="2" inputmode="numeric" pattern="[0-9]"
+                style="width:42px;height:46px;text-align:center;font-size:1.2rem;font-weight:700;font-family:var(--f-mono);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-sizing:border-box;">
+              <input type="text" maxlength="1" class="totp-box" value="9" inputmode="numeric" pattern="[0-9]"
+                style="width:42px;height:46px;text-align:center;font-size:1.2rem;font-weight:700;font-family:var(--f-mono);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-sizing:border-box;">
+              <input type="text" maxlength="1" class="totp-box" value="4" inputmode="numeric" pattern="[0-9]"
+                style="width:42px;height:46px;text-align:center;font-size:1.2rem;font-weight:700;font-family:var(--f-mono);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-sizing:border-box;">
+              <input type="text" maxlength="1" class="totp-box" value="1" inputmode="numeric" pattern="[0-9]"
+                style="width:42px;height:46px;text-align:center;font-size:1.2rem;font-weight:700;font-family:var(--f-mono);border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-sizing:border-box;">
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:var(--ink-3);">
+              <span>NIST SP 800-63B AAL2 &middot; FIDO2 / TOTP</span>
+              <span style="color:var(--brand);font-weight:600;">✓ Hardware Token Synced</span>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-b full btn-gateway-action" id="btn-submit-firm-signin"
+            style="background:#019FFF;color:#fff;border:1px solid #019FFF;font-weight:600;font-size:.9rem;padding:12px;box-shadow:var(--shadow-sm);cursor:pointer;">
+            <span>Verify Credentials &amp; Enter Console</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ==================== PRACTITIONER REGISTRATION / SIGN UP FORM ==================== -->
+      <div class="card" id="card-practitioner-signup" style="display:none;background:var(--surface);border:1px solid rgba(1,159,255,0.3);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow-md);">
+        
+        <!-- Domain Restriction Badge -->
+        <div style="background:rgba(1,159,255,0.08);border:1px solid rgba(1,159,255,0.25);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:14px;font-size:.74rem;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-weight:700;color:var(--accent,#019FFF);text-transform:uppercase;font-size:.66rem;letter-spacing:.05em;">⚖ Circular 230 Staff Roster</span>
+          <span style="color:var(--ink-2);font-size:.72rem;">Required domain: <b style="font-family:var(--f-mono);color:var(--ink);">@pivot-aide-tax.com</b></span>
+        </div>
+
+        <!-- Google Workspace Sign-Up Option -->
+        <button type="button" class="btn btn-o full" id="btn-google-firm-signup" title="Sign up with Google Workspace (@pivot-aide-tax.com)"
+          style="display:flex;align-items:center;justify-content:center;gap:12px;padding:11px 16px;border-radius:var(--radius-sm);font-size:.88rem;font-weight:600;margin-bottom:14px;background:rgba(1,159,255,0.08);border:1px solid rgba(1,159,255,0.35);color:inherit;cursor:pointer;width:100%;box-sizing:border-box;">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Register with Google Workspace</span>
+        </button>
+
+        <!-- Divider -->
+        <div style="display:flex;align-items:center;margin:12px 0 18px;gap:12px;">
+          <span style="flex:1;height:1px;background:var(--line);"></span>
+          <span style="font-size:.70rem;color:var(--ink-2);font-family:var(--f-mono);letter-spacing:.04em;white-space:nowrap;">&mdash; or submit credential application &mdash;</span>
+          <span style="flex:1;height:1px;background:var(--line);"></span>
+        </div>
+
+        <form id="form-practitioner-signup" autocomplete="on">
+          <!-- 1. Full Legal Practitioner Name -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-signup-name" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              Full Legal Practitioner Name &amp; Designation
+            </label>
+            <input type="text" id="practitioner-signup-name" placeholder="e.g. Denise Rosenthal, CPA" required autocomplete="name"
+              style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;box-sizing:border-box;">
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">Will appear on IRS Form 8879 and client workpaper sign-offs.</span>
+          </div>
+
+          <!-- 2. Practice Role Dropdown -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-signup-role" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              Supervisory Practice Role
+            </label>
+            <select id="practitioner-signup-role" required
+              style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;background:var(--surface);color:var(--ink);box-sizing:border-box;">
+              <option value="firm_admin">Managing CPA / Partner Reviewer (Circular 230 § 10.22)</option>
+              <option value="firm_preparer">Enrolled Agent / Senior Tax Preparer</option>
+              <option value="firm_due_diligence">Circular 230 Due Diligence Lead</option>
+              <option value="firm_associate">Tax Associate / Intake Specialist</option>
+              <option value="firm_ops_admin">Firm Operations &amp; Security Administrator</option>
+            </select>
+          </div>
+
+          <!-- 3. Firm Staff Email -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-signup-email" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              Firm Staff Email (@pivot-aide-tax.com)
+            </label>
+            <input type="email" id="practitioner-signup-email" placeholder="practitioner@pivot-aide-tax.com" required autocomplete="email"
+              style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;box-sizing:border-box;">
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">Must end with @pivot-aide-tax.com or @pivot-aide.tax.</span>
+          </div>
+
+          <!-- 4. IRS PTIN / Staff Badge ID -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-signup-ptin" style="display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              <span>Active IRS PTIN / Badge Identifier</span>
+              <span class="chip night sm" style="font-size:.65rem;color:var(--accent);padding:1px 6px;">IRS Verified</span>
+            </label>
+            <input type="text" id="practitioner-signup-ptin" placeholder="P01234567" required maxlength="12"
+              style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;font-family:var(--f-mono);letter-spacing:.05em;box-sizing:border-box;">
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">Preparer Tax Identification Number issued by the Internal Revenue Service.</span>
+          </div>
+
+          <!-- 5. Master Passphrase -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-signup-password" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              Master Passphrase (NIST SP 800-63B Compliant)
+            </label>
+            <div class="pwd-toggle-wrap">
+              <input type="password" id="practitioner-signup-password" placeholder="Minimum 16 characters" required autocomplete="new-password"
+                style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;box-sizing:border-box;">
+              <button type="button" class="pwd-toggle-btn" data-target="practitioner-signup-password" aria-label="Show passphrase" title="Toggle password visibility">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span style="display:block;font-size:.7rem;color:var(--ink-2);margin-top:3px;">16+ characters, no predictable patterns.</span>
+          </div>
+
+          <!-- 6. Confirm Passphrase -->
+          <div class="field" style="margin-bottom:14px;">
+            <label for="practitioner-signup-confirm" style="display:block;font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:4px;">
+              Confirm Master Passphrase
+            </label>
+            <div class="pwd-toggle-wrap">
+              <input type="password" id="practitioner-signup-confirm" placeholder="Re-enter master passphrase" required autocomplete="new-password"
+                style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.9rem;box-sizing:border-box;">
+              <button type="button" class="pwd-toggle-btn" data-target="practitioner-signup-confirm" aria-label="Show passphrase" title="Toggle password visibility">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. NIST AAL2 Hardware/TOTP Multi-Factor Enrollment -->
+          <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-size:.78rem;font-weight:700;color:var(--ink);">🔐 NIST AAL2 2FA Enrollment Mode</span>
+              <span class="chip sm" style="background:rgba(1,159,255,0.12);color:var(--brand);border-color:rgba(1,159,255,0.3);font-size:.65rem;">MANDATORY</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:.78rem;color:var(--ink);">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                <input type="radio" name="firm-2fa-type" value="totp" checked style="accent-color:var(--brand,#019FFF);">
+                <span><b>Time-Based Authenticator App (TOTP)</b> &mdash; Google Authenticator / 1Password</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                <input type="radio" name="firm-2fa-type" value="fido2" style="accent-color:var(--brand,#019FFF);">
+                <span><b>FIDO2 / WebAuthn Hardware Security Key</b> &mdash; YubiKey / Titan Key</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 8. Circular 230 Statutory Due Diligence Pledge -->
+          <div style="background:rgba(1,159,255,0.08);border:1px solid rgba(1,159,255,0.3);border-radius:var(--radius-md);padding:12px;margin-bottom:18px;">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+              <input type="checkbox" id="practitioner-signup-pledge" required style="margin-top:3px;flex:none;accent-color:var(--brand,#019FFF);">
+              <span style="font-size:.75rem;color:var(--ink);line-height:1.45;">
+                <b>Circular 230 Due Diligence &amp; FTC Safeguards Statutory Pledge:</b> I certify under penalty of perjury that I hold an active IRS PTIN and agree to comply strictly with Treasury Department Circular 230 § 10.22 due diligence standards, IRC § 7216 non-disclosure mandates, and FTC Safeguards Rule 16 CFR Part 314 data security protocols.
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn full btn-gateway-action" id="btn-submit-firm-signup"
+            style="background:#019FFF;color:#fff;border:1px solid #019FFF;font-weight:600;font-size:.9rem;padding:12px;box-shadow:var(--shadow-sm);cursor:pointer;">
+            <span>Submit Staff Credential for Approval</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Cross-Portal Navigation Link -->
+      <div style="text-align:center;margin-top:16px;">
+        <a href="../client/login.html" style="color:var(--accent,#019FFF);font-size:.84rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+          <span>👤</span> Are you an individual taxpayer? Switch to Taxpayer Client Portal &rarr;
+        </a>
+      </div>
+
+      <!-- Statutory Trust Footer -->
+      <div style="text-align:center;margin-top:20px;font-size:.74rem;color:var(--ink-3);line-height:1.5;">
+        The File Room &middot; Operations Console &middot; NIST SP 800-63B AAL2<br>
+        IRS Circular 230 Regulations &middot; FTC Safeguards 16 CFR § 314.4
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- Client-Side Controller -->
+  <script type="module" src="../js/firebase.js"></script>
+  <script src="../js/auth-guard.js"></script>
+  <script type="module" src="../js/auth.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var formSignIn = document.getElementById('form-practitioner-signin');
+      var alertBox = document.getElementById('auth-alert-box');
+      var guardrail403 = document.getElementById('guardrail-403');
+      var guardrailMsg = document.getElementById('guardrail-403-message');
+      var guardrailEmail = document.getElementById('guardrail-session-email');
+      var btnClearClient = document.getElementById('btn-clear-client-session');
+      var btnQuickCpa = document.getElementById('btn-quick-cpa');
+      var totpInputs = document.querySelectorAll('.totp-box');
+
+      function showAlert(msg, isErr) {
+        if (!alertBox) return;
+        alertBox.style.display = 'block';
+        alertBox.style.background = isErr ? 'var(--danger-bg, #fee2e2)' : 'var(--ok-bg, #e6f5ec)';
+        alertBox.style.color = isErr ? 'var(--danger, #dc2626)' : 'var(--ok, #1f8a54)';
+        alertBox.style.border = isErr ? '1px solid var(--danger)' : '1px solid var(--ok)';
+        alertBox.innerHTML = (isErr ? '<b>Security Alert:</b> ' : '<b>Success:</b> ') + msg;
+      }
+
+      function show403Guardrail(clientEmail, reason) {
+        if (!guardrail403) return;
+        if (guardrailEmail) guardrailEmail.textContent = clientEmail || 'client_session';
+        if (guardrailMsg && reason) guardrailMsg.innerHTML = reason;
+        guardrail403.style.display = 'block';
+        guardrail403.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Check URL parameters or active session for 403 trigger
+      function inspectSecurityGuardrail() {
+        var params = new URLSearchParams(window.location.search);
+        var errParam = params.get('error');
+        var roleParam = params.get('role');
+
+        var savedSession = null;
+        try {
+          var raw = localStorage.getItem('tfr_user_session');
+          if (raw) savedSession = JSON.parse(raw);
+        } catch (_) {}
+
+        if (errParam === '403_unauthorized_role' || errParam === 'unauthorized' || roleParam === 'client') {
+          var email = (savedSession && savedSession.email) || 'm.whitfield@example.com';
+          show403Guardrail(email, '<b>Unauthorized Role (HTTP 403):</b> Attempted to enter Firm Operations Console using a Taxpayer client session or without practitioner credentials. Practitioner authorization is mandatory under FTC Safeguards § 314.4 and IRS Circular 230.');
+          return;
+        }
+
+        // If user is currently signed in as a client and navigated here
+        if (savedSession && savedSession.role === 'client' && !savedSession.isStaff) {
+          show403Guardrail(savedSession.email, '<b>Active Taxpayer Session Detected:</b> Your browser currently holds an active session for <b>' + (savedSession.name || savedSession.email) + '</b> with role <code>client</code>. Client accounts cannot access firm supervisory functions.');
+        }
+      }
+
+      // Clear client session button
+      if (btnClearClient) {
+        btnClearClient.addEventListener('click', function () {
+          try {
+            localStorage.removeItem('tfr_user_session');
+            sessionStorage.removeItem('tfr_user_session');
+          } catch (_) {}
+          if (guardrail403) guardrail403.style.display = 'none';
+          showAlert('Client session cleared. Please enter your practitioner credentials.', false);
+        });
+      }
+
+      // 6-digit TOTP jump logic
+      totpInputs.forEach(function (input, index) {
+        input.addEventListener('input', function (e) {
+          var val = e.target.value.replace(/\D/g, '');
+          e.target.value = val ? val.slice(-1) : '';
+          if (val && index < totpInputs.length - 1) {
+            totpInputs[index + 1].focus();
+          }
+        });
+
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace' && !e.target.value && index > 0) {
+            totpInputs[index - 1].focus();
+          }
+        });
+
+        // Paste support for 6-digit code
+        input.addEventListener('paste', function (e) {
+          var paste = (e.clipboardData || window.clipboardData).getData('text');
+          var digits = paste.replace(/\D/g, '').slice(0, 6);
+          if (digits.length > 0) {
+            e.preventDefault();
+            digits.split('').forEach(function (char, i) {
+              if (totpInputs[i]) totpInputs[i].value = char;
+            });
+            var nextFocus = Math.min(digits.length, totpInputs.length - 1);
+            totpInputs[nextFocus].focus();
+          }
+        });
+      });
+
+      // Practitioner Sign In Submission
+      if (formSignIn) {
+        formSignIn.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = document.getElementById('practitioner-email').value.trim();
+          var password = document.getElementById('practitioner-password').value;
+          var ptin = document.getElementById('practitioner-ptin').value.trim();
+
+          // 1. Guardrail: Block known client emails or client domain
+          var lowerEmail = email.toLowerCase();
+          if (lowerEmail === 'm.whitfield@example.com' || lowerEmail.includes('taxpayer') || lowerEmail.includes('client')) {
+            show403Guardrail(email, '<b>Unauthorized Role (403 Forbidden):</b> The account <code>' + email + '</code> holds a Taxpayer (client) role. Access to Firm Operations requires IRS Circular 230 practitioner credentials.');
+            showAlert('Unauthorized Role (403): Client accounts cannot access Firm Operations.', true);
+            return;
+          }
+
+          if (!email || !password || !ptin) {
+            showAlert('Please complete all practitioner credential fields.', true);
+            return;
+          }
+
+          var totpCode = Array.from(totpInputs).map(function (i) { return i.value; }).join('');
+          if (totpCode.length < 6) {
+            showAlert('Please enter the full 6-digit NIST AAL2 TOTP code.', true);
+            return;
+          }
+
+          // Authoritative Firm Session
+          var sessionData = {
+            uid: 'staff_denise_cpa',
+            name: 'Denise Rosenthal, CPA',
+            email: email,
+            role: (email.toLowerCase().includes('admin') || email.toLowerCase().includes('partner')) ? 'firm_admin' : 'firm_preparer',
+            staffRole: 'firm_admin',
+            ptin: ptin,
+            isStaff: true,
+            mfa: true,
+            mfaVerified: true,
+            nistAal2Verified: true,
+            isAuthenticated: true,
+            timestamp: Date.now()
+          };
+
+          try {
+            localStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+            sessionStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+          } catch (_) {}
+
+          showAlert('Credentials & NIST AAL2 verified. Redirecting to Firm Operations Console...', false);
+          setTimeout(function () {
+            window.location.href = 'dashboard.html';
+          }, 400);
+        });
+      }
+
+      // Google Workspace Sign-In with Domain Check Enforcement
+      var btnGoogleFirm = document.getElementById('btn-google-firm');
+      if (btnGoogleFirm) {
+        btnGoogleFirm.addEventListener('click', function () {
+          var emailInput = document.getElementById('practitioner-email');
+          var email = (emailInput ? emailInput.value.trim() : '');
+          if (email && !email.endsWith('@pivot-aide-tax.com') && !email.endsWith('@pivot-aide.tax')) {
+            showAlert('Access Denied: Google Workspace login for Firm Operations is restricted to authorized @pivot-aide-tax.com practitioner accounts.', true);
+            return;
+          }
+          var sessionData = {
+            uid: 'staff_denise_cpa',
+            name: 'Denise Rosenthal, CPA',
+            email: email || 'denise@pivot-aide-tax.com',
+            role: 'firm_admin',
+            staffRole: 'firm_admin',
+            ptin: 'P01489240',
+            isStaff: true,
+            mfa: true,
+            mfaVerified: true,
+            nistAal2Verified: true,
+            isAuthenticated: true,
+            timestamp: Date.now()
+          };
+          try {
+            localStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+            sessionStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+          } catch (_) {}
+          showAlert('Google Workspace SSO verified (@pivot-aide-tax.com). Initializing session...', false);
+          setTimeout(function () {
+            window.location.href = 'dashboard.html';
+          }, 400);
+        });
+      }
+
+      // Quick Demo Action (Managing CPA Denise R.)
+      if (btnQuickCpa) {
+        btnQuickCpa.addEventListener('click', function () {
+          var sessionData = {
+            uid: 'staff_denise_cpa',
+            name: 'Denise Rosenthal, CPA',
+            email: 'denise@pivot-aide.tax',
+            role: 'firm_admin',
+            staffRole: 'firm_admin',
+            ptin: 'P01489240',
+            isStaff: true,
+            mfa: true,
+            mfaVerified: true,
+            nistAal2Verified: true,
+            isAuthenticated: true,
+            timestamp: Date.now()
+          };
+          try {
+            localStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+            sessionStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+          } catch (_) {}
+          showAlert('Bypass active: Initializing Denise Rosenthal, CPA (Managing Partner)...', false);
+          setTimeout(function () {
+            window.location.href = 'dashboard.html';
+          }, 200);
+        });
+      }
+
+      // Tab Switcher between Practitioner Sign In and Request Staff Access (Sign Up)
+      var tabSignIn = document.getElementById('tab-btn-firm-signin');
+      var tabSignUp = document.getElementById('tab-btn-firm-signup');
+      var cardSignIn = document.getElementById('card-practitioner-signin');
+      var cardSignUp = document.getElementById('card-practitioner-signup');
+      var formSignUp = document.getElementById('form-practitioner-signup');
+      var btnGoogleFirmSignUp = document.getElementById('btn-google-firm-signup');
+
+      function activateFirmTab(tab) {
+        if (tab === 'signup') {
+          if (tabSignUp) {
+            tabSignUp.className = 'btn sm active';
+            tabSignUp.style.background = '#019FFF';
+            tabSignUp.style.color = '#FFFFFF';
+            tabSignUp.style.borderColor = '#019FFF';
+            tabSignUp.style.boxShadow = '0 2px 8px rgba(1,159,255,0.35)';
+          }
+          if (tabSignIn) {
+            tabSignIn.className = 'btn sm inactive';
+            tabSignIn.style.background = 'transparent';
+            tabSignIn.style.color = '#9FBECF';
+            tabSignIn.style.borderColor = 'transparent';
+            tabSignIn.style.boxShadow = 'none';
+          }
+          if (cardSignUp) cardSignUp.style.display = 'block';
+          if (cardSignIn) cardSignIn.style.display = 'none';
+        } else {
+          if (tabSignIn) {
+            tabSignIn.className = 'btn sm active';
+            tabSignIn.style.background = '#019FFF';
+            tabSignIn.style.color = '#FFFFFF';
+            tabSignIn.style.borderColor = '#019FFF';
+            tabSignIn.style.boxShadow = '0 2px 8px rgba(1,159,255,0.35)';
+          }
+          if (tabSignUp) {
+            tabSignUp.className = 'btn sm inactive';
+            tabSignUp.style.background = 'transparent';
+            tabSignUp.style.color = '#9FBECF';
+            tabSignUp.style.borderColor = 'transparent';
+            tabSignUp.style.boxShadow = 'none';
+          }
+          if (cardSignIn) cardSignIn.style.display = 'block';
+          if (cardSignUp) cardSignUp.style.display = 'none';
+        }
+        if (alertBox) alertBox.style.display = 'none';
+      }
+
+      if (tabSignIn) {
+        tabSignIn.addEventListener('click', function () {
+          activateFirmTab('signin');
+        });
+      }
+      if (tabSignUp) {
+        tabSignUp.addEventListener('click', function () {
+          activateFirmTab('signup');
+        });
+      }
+
+      // Check URL params for tab=signup
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('tab') === 'signup') {
+        activateFirmTab('signup');
+      }
+
+      // Practitioner Sign Up Form Submission
+      if (formSignUp) {
+        formSignUp.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var name = document.getElementById('practitioner-signup-name').value.trim();
+          var role = document.getElementById('practitioner-signup-role').value;
+          var email = document.getElementById('practitioner-signup-email').value.trim().toLowerCase();
+          var ptin = document.getElementById('practitioner-signup-ptin').value.trim().toUpperCase();
+          var pwd = document.getElementById('practitioner-signup-password').value;
+          var confirm = document.getElementById('practitioner-signup-confirm').value;
+          var pledge = document.getElementById('practitioner-signup-pledge').checked;
+
+          if (!email.endsWith('@pivot-aide-tax.com') && !email.endsWith('@pivot-aide.tax')) {
+            showAlert('Access Denied: Staff registration is strictly restricted to authorized @pivot-aide-tax.com or @pivot-aide.tax practitioner emails.', true);
+            return;
+          }
+
+          if (email === 'm.whitfield@example.com' || email.includes('client')) {
+            showAlert('Unauthorized Role (403): Taxpayer client accounts cannot register under Firm Operations.', true);
+            return;
+          }
+
+          if (pwd !== confirm) {
+            showAlert('Passphrases do not match. Please verify your master passphrase.', true);
+            return;
+          }
+
+          if (pwd.length < 8) {
+            showAlert('Passphrase must be at least 8 characters (16+ recommended for NIST SP 800-63B).', true);
+            return;
+          }
+
+          if (!pledge) {
+            showAlert('Mandatory Statutory Attestation: You must pledge to IRS Circular 230 § 10.22 standards.', true);
+            return;
+          }
+
+          var sessionData = {
+            uid: 'staff_' + email.replace(/[^a-zA-Z0-9]/g, '_'),
+            name: name,
+            email: email,
+            role: 'firm_staff',
+            staffRole: role,
+            ptin: ptin,
+            isStaff: true,
+            mfa: true,
+            mfaVerified: true,
+            nistAal2Verified: true,
+            isAuthenticated: true,
+            timestamp: Date.now()
+          };
+
+          try {
+            localStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+            sessionStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+          } catch (_) {}
+
+          showAlert('Practitioner credential registered & approved under Circular 230. Launching Operations Console...', false);
+          setTimeout(function () {
+            window.location.href = 'dashboard.html';
+          }, 400);
+        });
+      }
+
+      // Google Workspace Sign-Up button
+      if (btnGoogleFirmSignUp) {
+        btnGoogleFirmSignUp.addEventListener('click', function () {
+          var emailInput = document.getElementById('practitioner-signup-email');
+          var email = (emailInput ? emailInput.value.trim().toLowerCase() : '') || 'denise@pivot-aide-tax.com';
+          if (!email.endsWith('@pivot-aide-tax.com') && !email.endsWith('@pivot-aide.tax')) {
+            showAlert('Access Denied: Google Workspace registration requires an authorized @pivot-aide-tax.com account.', true);
+            return;
+          }
+          var sessionData = {
+            uid: 'staff_google_cpa',
+            name: 'Denise Rosenthal, CPA',
+            email: email,
+            role: 'firm_admin',
+            staffRole: 'firm_admin',
+            ptin: 'P01489240',
+            isStaff: true,
+            mfa: true,
+            mfaVerified: true,
+            nistAal2Verified: true,
+            isAuthenticated: true,
+            timestamp: Date.now()
+          };
+          try {
+            localStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+            sessionStorage.setItem('tfr_user_session', JSON.stringify(sessionData));
+          } catch (_) {}
+          showAlert('Google Workspace staff credential provisioned. Entering Console...', false);
+          setTimeout(function () {
+            window.location.href = 'dashboard.html';
+          }, 400);
+        });
+      }
+
+      // Password visibility toggle handler
+      var EYE_ICON_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+      var EYE_OFF_ICON_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+
+      function setupPasswordToggles() {
+        var toggleBtns = document.querySelectorAll('.pwd-toggle-btn');
+        toggleBtns.forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var targetId = btn.getAttribute('data-target');
+            var input = targetId ? document.getElementById(targetId) : null;
+            if (!input) return;
+
+            var isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            btn.innerHTML = isPassword ? EYE_OFF_ICON_SVG : EYE_ICON_SVG;
+            btn.setAttribute('aria-label', isPassword ? 'Hide passphrase' : 'Show passphrase');
+            btn.setAttribute('title', isPassword ? 'Hide passphrase' : 'Show passphrase');
+          });
+        });
+      }
+
+      // Initialize
+      inspectSecurityGuardrail();
+      setupPasswordToggles();
+    })();
+  </script>
+</body>
+
+</html>

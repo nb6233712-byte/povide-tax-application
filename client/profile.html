@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile &amp; Security — Client Portal — The File Room</title>
+  <meta name="description" content="Taxpayer profile settings, MFA security, and IRC § 7216 statutory consents — The File Room by Pivot Aide Tax.">
+
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='22 4 156 172'%3E%3Cellipse cx='100' cy='88' rx='69' ry='67' fill='%231D3D51'/%3E%3Cellipse cx='100' cy='90' rx='59' ry='55' fill='%232C5169'/%3E%3Ccircle cx='73' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='127' cy='90' r='26' fill='%23F2F8FC'/%3E%3Ccircle cx='73' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='127' cy='90' r='16' fill='%23019FFF'/%3E%3Ccircle cx='73' cy='90' r='7.5' fill='%2306202D'/%3E%3Ccircle cx='127' cy='90' r='7.5' fill='%2306202D'/%3E%3Cpath d='M100 103 L110 121 L100 131 L90 121 Z' fill='%23EAE42F'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shared-layout.css">
+</head>
+
+<body>
+  <div class="stage desk-mode" id="stage">
+    <div class="device desk" id="device">
+      <div class="notch"><span>9:41</span><span class="dot"></span><span>●●●●</span></div>
+
+      <div class="app" id="app">
+        <header class="appbar"></header>
+
+        <div class="workspace">
+          <div class="drawer-backdrop" id="drawer-backdrop"></div>
+          <aside class="side" id="side" aria-label="Client Portal Navigation"></aside>
+
+          <main class="body" id="body">
+            <div id="page-breadcrumbs"></div>
+
+            <div class="page-header-row">
+              <div class="page-title-wrap">
+                <h1>Profile &amp; Security Settings</h1>
+                <p class="page-subtitle">Personal information, authentication assurance, and IRC § 7216 privacy permissions</p>
+              </div>
+              <div class="page-actions-wrap">
+                <a href="dashboard.html" class="btn sm btn-o">&larr; Dashboard</a>
+              </div>
+            </div>
+
+            <div class="states-demo-bar">
+              <span class="states-demo-label">PROFILE STATE:</span>
+              <button type="button" class="states-demo-btn active" id="btn-state-live">● Live View</button>
+              <button type="button" class="states-demo-btn" id="btn-state-loading">Loading State</button>
+              <button type="button" class="states-demo-btn" id="btn-state-empty">Empty State</button>
+              <button type="button" class="states-demo-btn" id="btn-state-error">Error State</button>
+            </div>
+
+            <div id="profile-content-area">
+              <!-- Account Details Card -->
+              <div class="card p-lg mb-lg" style="background:var(--surface);">
+                <h3 style="font-family:var(--f-display);margin:0 0 16px 0;font-size:1.15rem;">Taxpayer Profile</h3>
+                <div class="grid col-2" style="gap:16px;font-size:.85rem;">
+                  <div>
+                    <label style="display:block;font-size:.75rem;color:var(--ink-2);margin-bottom:4px;">Full Legal Name</label>
+                    <input type="text" value="Michael Whitfield" style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);" readonly />
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:.75rem;color:var(--ink-2);margin-bottom:4px;">Spouse Name (Joint Return)</label>
+                    <input type="text" value="Elena Whitfield" style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);" readonly />
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:.75rem;color:var(--ink-2);margin-bottom:4px;">Primary Email Address</label>
+                    <input type="email" value="m.whitfield@example.com" style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);" readonly />
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:.75rem;color:var(--ink-2);margin-bottom:4px;">Primary Phone</label>
+                    <input type="tel" value="(202) 555-4417" style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);" readonly />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Security & MFA Card -->
+              <div class="card p-lg mb-lg" style="background:var(--surface);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <h3 style="font-family:var(--f-display);margin:0;font-size:1.15rem;">Authentication &amp; Security Assurance</h3>
+                  <span class="chip ok sm">NIST AAL2 ENFORCED</span>
+                </div>
+                <p style="font-size:.8rem;color:var(--ink-2);margin:0 0 16px 0;line-height:1.45;">
+                  Multi-Factor Authentication (MFA) ensures that unauthorized third parties cannot access your returns or financial documents.
+                </p>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--surface-2);border-radius:6px;">
+                  <div>
+                    <b style="font-size:.85rem;display:block;">SMS / Authenticator 2-Factor Authentication</b>
+                    <span style="font-size:.75rem;color:var(--ink-2);">Configured for mobile number ending in ····4417</span>
+                  </div>
+                  <span class="chip ok sm">ACTIVE</span>
+                </div>
+              </div>
+
+              <!-- IRC § 7216 Statutory Consent Ledger -->
+              <div class="card p-lg" style="background:var(--surface);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <h3 style="font-family:var(--f-display);margin:0;font-size:1.15rem;">IRC § 7216 Statutory Privacy Consent</h3>
+                  <span class="chip gold sm">FEDERAL STATUTORY RECORD</span>
+                </div>
+                <p style="font-size:.8rem;color:var(--ink-2);margin:0 0 16px 0;line-height:1.45;">
+                  Federal law prohibits tax preparers from disclosing or using tax return information for any purpose other than preparing your return without your affirmative consent under Treas. Reg. § 301.7216-3.
+                </p>
+                <div style="padding:14px;background:var(--surface-2);border-left:3px solid var(--gold);border-radius:4px;font-size:.8rem;line-height:1.5;">
+                  <b>Consent to Disclose Tax Return Information to Secure Cloud Vault:</b><br>
+                  Status: <span class="chip ok sm">AFFIRMATIVELY GRANTED</span> (Jan 14, 2026 11:22 UTC)<br>
+                  Signed by: Michael Whitfield &middot; Digital IP logged &middot; Immutable WORM audit record created.
+                </div>
+              </div>
+            </div>
+
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal-card modal-wide" id="modal-container"></div>
+  </div>
+  <div id="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/firebase.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth-guard.js"></script>
+  <script src="../js/core/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      FileRoomLayout.init({
+        portal: 'client',
+        activePage: 'profile',
+        breadcrumbs: [
+          { title: 'The File Room', href: '../index.html' },
+          { title: 'Client Portal', href: 'dashboard.html' },
+          { title: 'Profile & Security' }
+        ]
+      });
+
+      var contentArea = document.getElementById('profile-content-area');
+      var originalHtml = contentArea.innerHTML;
+      var btnLive = document.getElementById('btn-state-live');
+      var btnLoading = document.getElementById('btn-state-loading');
+      var btnEmpty = document.getElementById('btn-state-empty');
+      var btnError = document.getElementById('btn-state-error');
+      var allBtns = [btnLive, btnLoading, btnEmpty, btnError];
+
+      function setActive(b) {
+        allBtns.forEach(function (btn) { btn.classList.remove('active'); });
+        b.classList.add('active');
+      }
+
+      btnLive.addEventListener('click', function () {
+        setActive(btnLive);
+        contentArea.innerHTML = originalHtml;
+        FileRoomLayout.showToast('Profile and security settings loaded', 'info');
+      });
+
+      btnLoading.addEventListener('click', function () {
+        setActive(btnLoading);
+        FileRoomLayout.renderLoading(contentArea, 'Loading secure profile and consent ledger...');
+      });
+
+      btnEmpty.addEventListener('click', function () {
+        setActive(btnEmpty);
+        FileRoomLayout.renderEmpty(contentArea, {
+          icon: '⚙',
+          title: 'Profile Not Initialized',
+          desc: 'Your account profile has not completed initial registration.',
+          actionText: 'Complete Setup',
+          actionHref: '#'
+        });
+      });
+
+      btnError.addEventListener('click', function () {
+        setActive(btnError);
+        FileRoomLayout.renderError(contentArea, {
+          title: 'Unable to Load Security Profile',
+          desc: 'Could not connect to authentication provider. Please retry.',
+          onRetry: function () { btnLive.click(); }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
