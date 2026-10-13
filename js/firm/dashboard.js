@@ -281,13 +281,14 @@
             }
           },
           function (err) {
+            if (err && (err.code === 'permission-denied' || (err.message && err.message.includes('permissions')))) {
+              return; // Gracefully rely on baseline queue when Firestore permissions are pending
+            }
             console.warn('documentRequests stream listener error:', err);
           }
         );
         if (typeof unsubDocReqs === 'function') self.unsubscribers.push(unsubDocReqs);
-      } catch (err) {
-        console.warn('Could not bind documentRequests live listener:', err);
-      }
+      } catch (_) {}
 
       // 1b. Live Uploaded Documents Listener
       try {
@@ -309,13 +310,14 @@
             }
           },
           function (err) {
+            if (err && (err.code === 'permission-denied' || (err.message && err.message.includes('permissions')))) {
+              return; // Gracefully rely on baseline documents when Firestore permissions are pending
+            }
             console.warn('documents stream listener error:', err);
           }
         );
         if (typeof unsubDocs === 'function') self.unsubscribers.push(unsubDocs);
-      } catch (err) {
-        console.warn('Could not bind documents live listener:', err);
-      }
+      } catch (_) {}
 
       // 2. Live Signatures Listener
       try {

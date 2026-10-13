@@ -950,8 +950,20 @@ export const FirebaseBridge = {
 
   async _queryRestCollection(collectionName) {
     try {
+      let token = null;
+      if (typeof auth !== 'undefined' && auth && auth.currentUser) {
+        try {
+          token = await auth.currentUser.getIdToken();
+        } catch (_) {}
+      }
+      // If unauthenticated or no token available, do not issue raw unauthenticated REST requests
+      // which generate 403 Forbidden network errors in DevTools
+      if (!token) return [];
+
       const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/${encodeURIComponent(collectionName)}`;
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) return [];
       const json = await res.json();
       if (!json.documents || !Array.isArray(json.documents)) return [];
